@@ -1,0 +1,55 @@
+{
+    "name": "eugenematvejev/css_compiler",
+    "description": "compiles css assets from sass or less on composer events",
+    "type": "lib",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eugene Matvejev",
+            "email": "eugene.matvejev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "EM\\CssCompiler\\Handler\\": "",
+            "EM\\CssCompiler\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EM\\Tests\\CssCompiler\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">= 7.0.4",
+        "leafo/lessphp": "^0.5",
+        "leafo/scssphp": "0.6.3 as dev-master",
+        "phpunit/phpunit": "^5.4",
+        "leafo/scssphp-compass": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "scripts": {
+        "post-update-cmd": "@custom-events",
+        "post-install-cmd": "@custom-events",
+        "custom-events": [
+            "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin/"
+    },
+    "require-dev": {
+        "composer/composer": "^1.1"
+    },
+    "extra": {
+        "css-compiler": [
+            {
+                "format": "compact",
+                "input": [
+                    "src/assets/scss"
+                ],
+                "output": "web/assets/app.css"
+            }
+        ]
+    }
+}
