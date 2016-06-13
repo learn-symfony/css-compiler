@@ -2,9 +2,7 @@
 
 namespace EM\CssCompiler\Container;
 
-//use Symfony\Component\Yaml\Inline;
-//use Symfony\Component\Yaml\Parser;
-//use Symfony\Component\Yaml\Yaml;
+use EM\CssCompiler\Exception\FileException;
 
 class File
 {
@@ -32,15 +30,10 @@ class File
      */
     private $type;
 
-//    public function __construct(string $sourcePath, string $outputPath, string $sourceContent, string $parsedContent, string $type)
-    public function __construct(string $sourcePath)
+    public function __construct(string $sourcePath, string $outputPath)
     {
         $this->setSourcePath($sourcePath);
-//        $this->sourcePath = $sourcePath;
-//        $this->outputPath = $outputPath;
-//        $this->sourceContent = $sourceContent;
-//        $this->parsedContent = $parsedContent;
-//        $this->type = $type ?: $this->type;
+        $this->outputPath = $outputPath;
     }
 
     public function getSourcePath() : string
@@ -76,6 +69,13 @@ class File
     public function setSourceContent(string $content) : self
     {
         $this->sourceContent = $content;
+
+        return $this;
+    }
+
+    public function setSourceContentFromSourcePath() : self
+    {
+        $this->sourceContent = $this->readSourceContentByPath();
 
         return $this;
     }
@@ -119,5 +119,14 @@ class File
             default:
                 $this->type = 'unknown';
         }
+    }
+
+    private function readSourceContentByPath()
+    {
+        if (!file_exists($this->getSourcePath())) {
+            throw new FileException("file: {$this->sourcePath} doesn't exists");
+        }
+
+        return file_get_contents($this->getSourcePath());
     }
 }
