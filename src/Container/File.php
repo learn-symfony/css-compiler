@@ -6,9 +6,10 @@ use EM\CssCompiler\Exception\FileException;
 
 class File
 {
-    const TYPE_SCSS = 'scss';
-    const TYPE_SASS = 'sass';
-    const TYPE_LESS = 'less';
+    const TYPE_SCSS    = 'scss';
+    const TYPE_SASS    = 'sass';
+    const TYPE_COMPASS = 'compass';
+    const TYPE_LESS    = 'less';
     /**
      * @var string
      */
@@ -112,6 +113,9 @@ class File
                 break;
             case 0 !== preg_match('/^.*\.' . static::TYPE_SASS . '/', $path):
                 $this->type = static::TYPE_SASS;
+                break;
+            case 0 !== preg_match('/^.*\.' . static::TYPE_COMPASS . '/', $path):
+                $this->type = static::TYPE_COMPASS;
                 break;
             case 0 !== preg_match('/^.*\.' . static::TYPE_LESS . '/', $path):
                 $this->type = static::TYPE_LESS;

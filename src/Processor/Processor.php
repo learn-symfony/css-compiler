@@ -11,10 +11,10 @@ use scss_compass as CompassCompiler;
 
 class Processor
 {
-    const TYPE_SCSS = 'scss';
+    const TYPE_SCSS    = 'scss';
     const TYPE_COMPASS = 'scss';
-    const TYPE_SASS = 'sass';
-    const TYPE_LESS = 'less';
+    const TYPE_SASS    = 'sass';
+    const TYPE_LESS    = 'less';
     /**
      * @var IOInterface
      */
@@ -23,15 +23,31 @@ class Processor
      * @var File[]
      */
     private $files = [];
+    /**
+     * @var SASSCompiler
+     */
+    private $sass;
+    /**
+     * @var LESSCompiler
+     */
+    private $less;
+    /**
+     * @var CompassCompiler
+     */
+    private $compass;
 
     public function __construct(IOInterface $io)
     {
         $this->io = $io;
+        $this->initCompilers();
     }
 
-    public function resetFiles()
+    protected function initCompilers()
     {
-        $this->files = [];
+        $this->less = new LESSCompiler();
+        $this->sass = new SASSCompiler();
+        /** attaches compass functionality to the SASS compiler */
+        $this->compass = new CompassCompiler($this->sass);
     }
 
     public function attachFiles(string $inputPath, string $outputPath)
@@ -111,27 +127,18 @@ class Processor
 //                throw new \InvalidArgumentException('available options are: xxx');
 //        }
 
-        $lessCompiler = new LESSCompiler();
-//        $lessCompiler->setFormatter()
-        $sassCompiler = new SASSCompiler();
-        $sassCompiler->setFormatter($formatter);
-
-        /** attaches compass functionality to the SASS compiler */
-        new CompassCompiler($sassCompiler);
-
         foreach ($this->files as $file) {
             $this->io->write("processing file: {$file->getSourcePath()}");
             $file->setSourceContentFromSourcePath();
 
             switch ($file->getType()) {
+                case static::TYPE_COMPASS:
                 case static::TYPE_SCSS:
-                    $content = $sassCompiler->compile($file->getSourceContent());
-                    break;
                 case static::TYPE_SASS:
-                    $content = $sassCompiler->compile($file->getSourceContent());
+                    $content = $this->sass->compile($file->getSourceContent());
                     break;
                 case static::TYPE_LESS:
-                    $content = $lessCompiler->compile($file->getSourceContent());
+                    $content = $this->less->compile($file->getSourceContent());
                     break;
                 default:
                     throw new CompilerException('unknown compiler');
