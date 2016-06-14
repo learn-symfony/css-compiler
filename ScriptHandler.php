@@ -26,14 +26,14 @@ class ScriptHandler
         }
 
         $processor = new Processor($event->getIO());
-
+        $prefix = getcwd();
         foreach ($configs as $config) {
             if (!is_array($config)) {
                 throw new \InvalidArgumentException('The extra.css-compiler should contain only configuration objects.');
             }
 
             foreach ($config['input'] as $item => $value) {
-                $processor->attachFiles(__DIR__ . "/{$value}", __DIR__ . "/{$config['output']}");
+                $processor->attachFiles("{$prefix}/{$value}", "{$prefix}/{$config['output']}");
             }
 
             $processor->processFiles(isset($config['format']) ? $config['format'] : 'compact');
