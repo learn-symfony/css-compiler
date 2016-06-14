@@ -1,5 +1,5 @@
 {
-    "name": "eugenematvejev/css_compiler",
+    "name": "eugene-matvejev/css-compiler",
     "description": "compiles css assets from sass or less on composer events",
     "type": "lib",
     "license": "MIT",
@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">= 7.0.4",
+        "php": ">= 5.5.9",
         "leafo/lessphp": "^0.5",
         "leafo/scssphp": "0.6.3 as dev-master",
         "leafo/scssphp-compass": "dev-master"
@@ -45,7 +45,6 @@
         "css-compiler": [
             {
                 "format": "compact",
-                "force": true,
                 "input": [
                     "tests/shared-fixtures/scss"
                 ],
@@ -53,7 +52,6 @@
             },
             {
                 "format": "compact",
-                "force": true,
                 "input": [
                     "tests/shared-fixtures/sass"
                 ],
