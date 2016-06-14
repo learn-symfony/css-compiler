@@ -13,19 +13,16 @@
          syntaxCheck                 = "false"
          bootstrap                   = "vendor/autoload.php"
 >
-    <php>
-        <server name="KERNEL_DIR" value="app/" />
-    </php>
 
     <testsuites>
         <testsuite name="mandatory test suite">
-            <directory>./tests</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./src</directory>
+            <directory>src/</directory>
         </whitelist>
     </filter>
 </phpunit>
