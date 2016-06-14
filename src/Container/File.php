@@ -2,15 +2,14 @@
 
 namespace EM\CssCompiler\Container;
 
-//use Symfony\Component\Yaml\Inline;
-//use Symfony\Component\Yaml\Parser;
-//use Symfony\Component\Yaml\Yaml;
+use EM\CssCompiler\Exception\FileException;
 
 class File
 {
-    const TYPE_SCSS = 'scss';
-    const TYPE_SASS = 'sass';
-    const TYPE_LESS = 'less';
+    const TYPE_SCSS    = 'scss';
+    const TYPE_SASS    = 'sass';
+    const TYPE_COMPASS = 'compass';
+    const TYPE_LESS    = 'less';
     /**
      * @var string
      */
@@ -32,15 +31,10 @@ class File
      */
     private $type;
 
-//    public function __construct(string $sourcePath, string $outputPath, string $sourceContent, string $parsedContent, string $type)
-    public function __construct(string $sourcePath)
+    public function __construct(string $sourcePath, string $outputPath)
     {
         $this->setSourcePath($sourcePath);
-//        $this->sourcePath = $sourcePath;
-//        $this->outputPath = $outputPath;
-//        $this->sourceContent = $sourceContent;
-//        $this->parsedContent = $parsedContent;
-//        $this->type = $type ?: $this->type;
+        $this->outputPath = $outputPath;
     }
 
     public function getSourcePath() : string
@@ -80,6 +74,13 @@ class File
         return $this;
     }
 
+    public function setSourceContentFromSourcePath() : self
+    {
+        $this->sourceContent = $this->readSourceContentByPath();
+
+        return $this;
+    }
+
     public function getParsedContent() : string
     {
         return $this->parsedContent;
@@ -113,11 +114,23 @@ class File
             case 0 !== preg_match('/^.*\.' . static::TYPE_SASS . '/', $path):
                 $this->type = static::TYPE_SASS;
                 break;
+            case 0 !== preg_match('/^.*\.' . static::TYPE_COMPASS . '/', $path):
+                $this->type = static::TYPE_COMPASS;
+                break;
             case 0 !== preg_match('/^.*\.' . static::TYPE_LESS . '/', $path):
                 $this->type = static::TYPE_LESS;
                 break;
             default:
                 $this->type = 'unknown';
         }
+    }
+
+    private function readSourceContentByPath()
+    {
+        if (!file_exists($this->getSourcePath())) {
+            throw new FileException("file: {$this->sourcePath} doesn't exists");
+        }
+
+        return file_get_contents($this->getSourcePath());
     }
 }

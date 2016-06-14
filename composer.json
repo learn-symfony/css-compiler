@@ -24,8 +24,11 @@
         "php": ">= 7.0.4",
         "leafo/lessphp": "^0.5",
         "leafo/scssphp": "0.6.3 as dev-master",
-        "phpunit/phpunit": "^5.4",
         "leafo/scssphp-compass": "dev-master"
+    },
+    "require-dev": {
+        "composer/composer": "^1.1",
+        "phpunit/phpunit": "^5.4"
     },
     "minimum-stability": "dev",
     "scripts": {
@@ -38,17 +41,30 @@
     "config": {
         "bin-dir": "bin/"
     },
-    "require-dev": {
-        "composer/composer": "^1.1"
-    },
     "extra": {
         "css-compiler": [
             {
                 "format": "compact",
+                "force": true,
                 "input": [
-                    "src/assets/scss"
+                    "tests/shared-fixtures/scss"
                 ],
-                "output": "web/assets/app.css"
+                "output": "var/cache/assets/scss.css"
+            },
+            {
+                "format": "compact",
+                "force": true,
+                "input": [
+                    "tests/shared-fixtures/sass"
+                ],
+                "output": "var/cache/assets/sass.css"
+            },
+            {
+                "format": "compact",
+                "input": [
+                    "tests/shared-fixtures/compass/app.scss"
+                ],
+                "output": "var/cache/assets/compass.css"
             }
         ]
     }

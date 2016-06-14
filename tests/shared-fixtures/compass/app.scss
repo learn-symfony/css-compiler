@@ -7,9 +7,10 @@
 
 /* @import "compass/reset"; */
 
-@import "compass";
-@import "layout";
-@import "layout-loading-animation";
-
-@import "game";
-@import "game-results";
+@import "compass/reset";
+@import "sass/layout";
+@import "sass/layout-loading-animation";
+//@import "layout-loading-animation";
+//
+//@import "game";
+//@import "game-results";
