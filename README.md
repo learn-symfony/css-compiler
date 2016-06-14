@@ -1,9 +1,8 @@
-# css-compiler
-compiles SASS/LESS and Compass, available though Composer
-
+# CSS Compiler
+* can be triggered from composer's script's session: compiles LESS/SASS/Compass
 
 # How to use:
-add into composer __scripts__ directory:
+1. add into composer __scripts__ directory:
 ```
 "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
 ```
@@ -18,9 +17,7 @@ example:
         ]
     },
 ```
-
-##how to trigger
-add _css-compiler_ information inside of the _extra_ composer configuration
+2. add _css-compiler_ information inside of the _extra_ composer configuration
 ```
     "css-compiler": [
         {
@@ -46,7 +43,8 @@ add _css-compiler_ information inside of the _extra_ composer configuration
         }
     ]
 ```
-where:
+
+#legend
     _format_: compression format
     _input_: array of routes, all files inside of the route if it is directory will be picked up
     _output_: file where it should put content (hard-copy)
