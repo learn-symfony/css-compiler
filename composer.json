@@ -40,30 +40,5 @@
     },
     "config": {
         "bin-dir": "bin/"
-    },
-    "extra": {
-        "css-compiler": [
-            {
-                "format": "compact",
-                "input": [
-                    "tests/shared-fixtures/scss"
-                ],
-                "output": "var/cache/assets/scss.css"
-            },
-            {
-                "format": "compact",
-                "input": [
-                    "tests/shared-fixtures/sass"
-                ],
-                "output": "var/cache/assets/sass.css"
-            },
-            {
-                "format": "compact",
-                "input": [
-                    "tests/shared-fixtures/compass/app.scss"
-                ],
-                "output": "var/cache/assets/compass.css"
-            }
-        ]
     }
 }
