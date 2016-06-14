@@ -27,8 +27,6 @@ class ScriptHandler
 
         $processor = new Processor($event->getIO());
 
-        exec('rm -rf ' . __DIR__ . '/var/*');
-
         foreach ($configs as $config) {
             if (!is_array($config)) {
                 throw new \InvalidArgumentException('The extra.css-compiler should contain only configuration objects.');
@@ -38,7 +36,7 @@ class ScriptHandler
                 $processor->attachFiles(__DIR__ . "/{$value}", __DIR__ . "/{$config['output']}");
             }
 
-            $processor->processFiles($config['format'] ?? 'compact');
+            $processor->processFiles(isset($config['format']) ? $config['format'] : 'compact');
         }
 
         $processor->saveOutput();

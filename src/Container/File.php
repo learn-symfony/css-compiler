@@ -31,18 +31,27 @@ class File
      */
     private $type;
 
-    public function __construct(string $sourcePath, string $outputPath)
+    /**
+     * @param string $sourcePath
+     * @param string $outputPath
+     */
+    public function __construct($sourcePath, $outputPath)
     {
         $this->setSourcePath($sourcePath);
         $this->outputPath = $outputPath;
     }
 
-    public function getSourcePath() : string
+    public function getSourcePath()
     {
         return $this->sourcePath;
     }
 
-    public function setSourcePath(string $path) : self
+    /**
+     * @param string $path
+     *
+     * @return File
+     */
+    public function setSourcePath($path)
     {
         $this->sourcePath = $path;
         $this->detectSourceTypeFromPath($path);
@@ -50,62 +59,103 @@ class File
         return $this;
     }
 
-    public function getOutputPath() : string
+    /**
+     * @return string
+     */
+    public function getOutputPath() 
     {
         return $this->outputPath;
     }
 
-    public function setOutputPath(string $path) : self
+    /**
+     * @param string $path
+     *
+     * @return File
+     */
+    public function setOutputPath($path)
     {
         $this->outputPath = $path;
 
         return $this;
     }
 
-    public function getSourceContent() : string
+    /**
+     * @return string
+     */
+    public function getSourceContent()
     {
         return $this->sourceContent;
     }
 
-    public function setSourceContent(string $content) : self
+    /**
+     * @param string $content
+     *
+     * @return File
+     */
+    public function setSourceContent($content)
     {
         $this->sourceContent = $content;
 
         return $this;
     }
 
-    public function setSourceContentFromSourcePath() : self
+    /**
+     * @return File
+     * @throws FileException
+     */
+    public function setSourceContentFromSourcePath() 
     {
         $this->sourceContent = $this->readSourceContentByPath();
 
         return $this;
     }
 
-    public function getParsedContent() : string
+    /**
+     * @return string
+     */
+    public function getParsedContent()
     {
         return $this->parsedContent;
     }
 
-    public function setParsedContent(string $content) : self
+    /**
+     * @param string $content
+     *
+     * @return File
+     */
+    public function setParsedContent($content) 
     {
         $this->parsedContent = $content;
 
         return $this;
     }
 
-    public function getType() : string
+    /**
+     * @return string
+     */
+    public function getType() 
     {
         return $this->type;
     }
 
-    public function setType(string $type) : self
+    /**
+     * @param string $type
+     *
+     * @return File
+     */
+    public function setType($type)
     {
         $this->type = $type;
 
         return $this;
     }
 
-    private function detectSourceTypeFromPath(string $path)
+    /**
+     * @param string $path
+     * 
+     * @return void
+     */
+    private function detectSourceTypeFromPath($path)
     {
         switch (true) {
             case 0 !== preg_match('/^.*\.' . static::TYPE_SCSS . '/', $path):
@@ -125,6 +175,10 @@ class File
         }
     }
 
+    /**
+     * @return string
+     * @throws FileException
+     */
     private function readSourceContentByPath()
     {
         if (!file_exists($this->getSourcePath())) {
