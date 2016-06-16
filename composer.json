@@ -23,13 +23,12 @@
     "require": {
         "php": ">= 5.5.9",
         "leafo/lessphp": "^0.5",
-        "leafo/scssphp-compass": "dev-master"
+        "leafo/scssphp-compass": "@dev"
     },
     "require-dev": {
         "composer/composer": "^1.1",
         "phpunit/phpunit": "^5.4"
     },
-    "minimum-stability": "dev",
     "scripts": {
         "post-update-cmd": "@custom-events",
         "post-install-cmd": "@custom-events",
