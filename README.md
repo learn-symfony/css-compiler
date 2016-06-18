@@ -3,7 +3,7 @@
 
 # How to use:
 ```
-composer require "eugene-matvejev/css-compiler":"@dev"
+composer require "eugene-matvejev/css-compiler"
 ```
 ### add into composer __scripts__ directory:
 ```
