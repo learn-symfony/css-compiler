@@ -2,6 +2,9 @@
 * can be triggered from composer's script's session: compiles LESS/SASS/Compass
 
 # How to use:
+```
+composer require "eugene-matvejev/css-compiler":"@dev"
+```
 ### add into composer __scripts__ directory:
 ```
 "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
