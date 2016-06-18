@@ -2,12 +2,12 @@
 * can be triggered from composer's script's session: compiles LESS/SASS/Compass
 
 # How to use:
-1. add into composer __scripts__ directory:
+### add into composer __scripts__ directory:
 ```
 "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
 ```
 
-example: 
+_example_:
 ```
     "scripts": {
         "post-update-cmd": "@custom-events",
@@ -17,7 +17,12 @@ example:
         ]
     },
 ```
-2. add _css-compiler_ information inside of the _extra_ composer configuration
+### add _css-compiler_ information inside of the _extra_ composer configuration
+ * _format_: compression format
+ * _input_: array of routes, all files inside of the route if it is directory will be picked up
+ * _output_: file where it should put content (hard-copy)
+
+_example_:
 ```
     "css-compiler": [
         {
@@ -43,8 +48,3 @@ example:
         }
     ]
 ```
-
-#legend
-    _format_: compression format
-    _input_: array of routes, all files inside of the route if it is directory will be picked up
-    _output_: file where it should put content (hard-copy)
