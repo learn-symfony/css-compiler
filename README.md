@@ -14,9 +14,11 @@ composer require "eugene-matvejev/css-compiler"
 if you have problem with min-stability you can use this solution in '_require(-dev)_':
 _example_:
 ```
+"require": {
     "eugene-matvejev/css-compiler": "^0.1",
     "leafo/scssphp-compass": "@dev",
-    "leafo/scssphp": "@dev",
+    "leafo/scssphp": "@dev"
+}
 ```
 
 ### add callback into into composer's __scripts__:
@@ -25,13 +27,13 @@ _example_:
 ```
 _example_:
 ```
-    "scripts": {
-        "post-update-cmd": "@custom-events",
-        "post-install-cmd": "@custom-events",
-        "custom-events": [
-            "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
-        ]
-    },
+"scripts": {
+    "post-update-cmd": "@custom-events",
+    "post-install-cmd": "@custom-events",
+    "custom-events": [
+        "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
+    ]
+}
 ```
 ### add _css-compiler_ information inside of the _extra_ composer configuration
  * _format_: compression format
@@ -40,6 +42,7 @@ _example_:
 
 _example_:
 ```
+"extra": {
     "css-compiler": [
         {
             "format": "compact",
@@ -63,4 +66,5 @@ _example_:
             "output": "var/cache/assets/compass.css"
         }
     ]
+}
 ```
