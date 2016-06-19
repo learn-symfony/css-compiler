@@ -4,8 +4,9 @@
 [![composer.lock](https://poser.pugx.org/eugene-matvejev/css-compiler/composerlock)](https://packagist.org/packages/eugene-matvejev/css-compiler)
 
 
-# package: CSS Compiler - compiles SASS and LESS sources into CSS
-* can be triggered from composer's script's session: compiles LESS/SASS/Compass
+# PHP CSS Compiler
+_compiles SASS and LESS sources into CSS_
+_can be triggered from composer's script's session: compiles LESS/SASS/Compass_
 
 # How to use:
 ```
