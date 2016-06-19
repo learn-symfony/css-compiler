@@ -1,6 +1,6 @@
 {
     "name": "eugene-matvejev/css-compiler",
-    "description": "compiles css assets from sass or less on composer events",
+    "description": "compiles SASS and LESS assets on composer's callback",
     "type": "lib",
     "license": "MIT",
     "authors": [
@@ -28,15 +28,5 @@
     "require-dev": {
         "composer/composer": "^1.1",
         "phpunit/phpunit": "^5.4"
-    },
-    "scripts": {
-        "post-update-cmd": "@custom-events",
-        "post-install-cmd": "@custom-events",
-        "custom-events": [
-            "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
-        ]
-    },
-    "config": {
-        "bin-dir": "bin/"
     }
 }
