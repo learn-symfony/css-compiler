@@ -5,24 +5,24 @@
 
 
 # PHP CSS Compiler
-_compiles SASS and LESS sources into CSS_
-_can be triggered from composer's script's session: compiles LESS/SASS/Compass_
+_can be triggered from composer's script's section: compiles LESS|SASS|Compass_
 
 # How to use:
 ```
 composer require "eugene-matvejev/css-compiler"
 ```
-### add into composer __scripts__ directory:
-```
-"EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
-```
-if you have problem with min-stability you can use this solution in '_require_' or '_require-dev_':
+if you have problem with min-stability you can use this solution in '_require(-dev)_':
+_example_:
 ```
     "eugene-matvejev/css-compiler": "^0.1",
     "leafo/scssphp-compass": "@dev",
     "leafo/scssphp": "@dev",
 ```
 
+### add callback into into composer's __scripts__:
+```
+"EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
+```
 _example_:
 ```
     "scripts": {
@@ -35,8 +35,8 @@ _example_:
 ```
 ### add _css-compiler_ information inside of the _extra_ composer configuration
  * _format_: compression format
- * _input_: array of routes, all files inside of the route if it is directory will be picked up
- * _output_: file where it should put content (hard-copy)
+ * _input_: array of relative paths to the composer.json, all files will be picked up recursivly inside of the directory
+ * _output_:  relative file path to the composer.json, where to save output (hard-copy)
 
 _example_:
 ```
