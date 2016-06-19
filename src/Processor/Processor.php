@@ -103,11 +103,11 @@ class Processor
 
             $directory = dirname($path);
             if (!is_dir($dir = $directory)) {
-                $this->io->write("creating directory: {$directory}");
+                $this->io->write("<info>creating directory</info>: {$directory}");
                 mkdir($directory, 0755, true);
             }
 
-            $this->io->write("creating output: {$path}");
+            $this->io->write("<info>save output into</info>: {$path}");
             file_put_contents($path, $content);
         }
     }
@@ -130,22 +130,9 @@ class Processor
             default:
                 throw new \InvalidArgumentException('available options are: xxx');
         }
-//        -f=format   Set the output format, includes "default", "compressed"
-
-//        switch ($formatter) {
-//            case 'compressed':
-//            case 'crunched':
-//            case 'expanded':
-//            case 'nested':
-//            case 'compact':
-//                $formatter = 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
-//                break;
-//            default:
-//                throw new \InvalidArgumentException('available options are: xxx');
-//        }
 
         foreach ($this->files as $file) {
-            $this->io->write("processing file: {$file->getSourcePath()}");
+            $this->io->write("<info>processing</info>: {$file->getSourcePath()}");
             $file->setSourceContentFromSourcePath();
 
             switch ($file->getType()) {
