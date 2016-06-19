@@ -9,6 +9,12 @@ composer require "eugene-matvejev/css-compiler"
 ```
 "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
 ```
+if you have problem with min-stability you can use this solution in '_require_' or '_require-dev_':
+```
+    "eugene-matvejev/css-compiler": "^0.1",
+    "leafo/scssphp-compass": "@dev",
+    "leafo/scssphp": "@dev",
+```
 
 _example_:
 ```
