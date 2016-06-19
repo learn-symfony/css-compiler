@@ -1,6 +1,6 @@
 {
-    "name": "eugenematvejev/css_compiler",
-    "description": "compiles css assets from sass or less on composer events",
+    "name": "eugene-matvejev/css-compiler",
+    "description": "compiles SASS and LESS assets on composer's callback",
     "type": "lib",
     "license": "MIT",
     "authors": [
@@ -21,51 +21,12 @@
         }
     },
     "require": {
-        "php": ">= 7.0.4",
+        "php": ">= 5.5.9",
         "leafo/lessphp": "^0.5",
-        "leafo/scssphp": "0.6.3 as dev-master",
         "leafo/scssphp-compass": "dev-master"
     },
     "require-dev": {
         "composer/composer": "^1.1",
-        "phpunit/phpunit": "^5.4"
-    },
-    "minimum-stability": "dev",
-    "scripts": {
-        "post-update-cmd": "@custom-events",
-        "post-install-cmd": "@custom-events",
-        "custom-events": [
-            "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
-        ]
-    },
-    "config": {
-        "bin-dir": "bin/"
-    },
-    "extra": {
-        "css-compiler": [
-            {
-                "format": "compact",
-                "force": true,
-                "input": [
-                    "tests/shared-fixtures/scss"
-                ],
-                "output": "var/cache/assets/scss.css"
-            },
-            {
-                "format": "compact",
-                "force": true,
-                "input": [
-                    "tests/shared-fixtures/sass"
-                ],
-                "output": "var/cache/assets/sass.css"
-            },
-            {
-                "format": "compact",
-                "input": [
-                    "tests/shared-fixtures/compass/app.scss"
-                ],
-                "output": "var/cache/assets/compass.css"
-            }
-        ]
+        "phpunit/phpunit": "^4.8"
     }
 }

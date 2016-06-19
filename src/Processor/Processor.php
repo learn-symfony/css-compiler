@@ -50,7 +50,13 @@ class Processor
         $this->compass = new CompassCompiler($this->sass);
     }
 
-    public function attachFiles(string $inputPath, string $outputPath)
+    /**
+     * @param string $inputPath
+     * @param string $outputPath
+     *
+     * @throws \Exception
+     */
+    public function attachFiles($inputPath, $outputPath)
     {
         if (is_dir($inputPath)) {
             $files = scandir($inputPath);
@@ -71,7 +77,10 @@ class Processor
         }
     }
 
-    public function concatOutput() : array
+    /**
+     * @return string[]
+     */
+    public function concatOutput()
     {
         $outputMap = [];
         foreach ($this->files as $file) {
@@ -85,22 +94,30 @@ class Processor
         return $outputMap;
     }
 
+    /**
+     * save output into file
+     */
     public function saveOutput()
     {
         foreach ($this->concatOutput() as $path => $content) {
 
             $directory = dirname($path);
             if (!is_dir($dir = $directory)) {
-                $this->io->write("creating directory: {$directory}");
+                $this->io->write("<info>creating directory</info>: {$directory}");
                 mkdir($directory, 0755, true);
             }
 
-            $this->io->write("creating output: {$path}");
+            $this->io->write("<info>save output into</info>: {$path}");
             file_put_contents($path, $content);
         }
     }
 
-    public function processFiles(string $formatter)
+    /**
+     * @param string $formatter
+     *
+     * @throws CompilerException
+     */
+    public function processFiles($formatter)
     {
         switch ($formatter) {
             case 'compressed':
@@ -113,28 +130,16 @@ class Processor
             default:
                 throw new \InvalidArgumentException('available options are: xxx');
         }
-//        -f=format   Set the output format, includes "default", "compressed"
-
-//        switch ($formatter) {
-//            case 'compressed':
-//            case 'crunched':
-//            case 'expanded':
-//            case 'nested':
-//            case 'compact':
-//                $formatter = 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
-//                break;
-//            default:
-//                throw new \InvalidArgumentException('available options are: xxx');
-//        }
 
         foreach ($this->files as $file) {
-            $this->io->write("processing file: {$file->getSourcePath()}");
+            $this->io->write("<info>processing</info>: {$file->getSourcePath()}");
             $file->setSourceContentFromSourcePath();
 
             switch ($file->getType()) {
                 case static::TYPE_COMPASS:
                 case static::TYPE_SCSS:
                 case static::TYPE_SASS:
+                    $this->sass->setFormatter($formatter);
                     $content = $this->sass->compile($file->getSourceContent());
                     break;
                 case static::TYPE_LESS:
