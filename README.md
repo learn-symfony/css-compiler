@@ -1,4 +1,10 @@
-# CSS Compiler
+[![Latest Stable Version](https://poser.pugx.org/eugene-matvejev/css-compiler/version)](https://packagist.org/packages/eugene-matvejev/css-compiler)
+[![Total Downloads](https://poser.pugx.org/eugene-matvejev/css-compiler/downloads)](https://packagist.org/packages/eugene-matvejev/css-compiler)
+[![License](https://poser.pugx.org/eugene-matvejev/css-compiler/license)](https://packagist.org/packages/eugene-matvejev/css-compiler)
+[![composer.lock](https://poser.pugx.org/eugene-matvejev/css-compiler/composerlock)](https://packagist.org/packages/eugene-matvejev/css-compiler)
+
+
+# package: CSS Compiler - compiles SASS and LESS sources into CSS
 * can be triggered from composer's script's session: compiles LESS/SASS/Compass
 
 # How to use:
