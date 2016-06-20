@@ -11,9 +11,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "EM\\CssCompiler\\Handler\\": "",
             "EM\\CssCompiler\\": "src/"
-        }
+        },
+        "classmap": [
+            "ScriptHandler.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
