@@ -11,10 +11,18 @@ use scss_compass as CompassCompiler;
 
 class Processor
 {
-    const TYPE_SCSS    = 'scss';
-    const TYPE_COMPASS = 'scss';
-    const TYPE_SASS    = 'sass';
-    const TYPE_LESS    = 'less';
+    const FORMATTER_COMPRESSED = 'compressed';
+    const FORMATTER_CRUNCHED   = 'crunched';
+    const FORMATTER_EXPANDED   = 'expanded';
+    const FORMATTER_NESTED     = 'nested';
+    const FORMATTER_COMPACT    = 'compact';
+    const SUPPORTED_FORMATTERS = [
+        self::FORMATTER_COMPRESSED,
+        self::FORMATTER_CRUNCHED,
+        self::FORMATTER_EXPANDED,
+        self::FORMATTER_NESTED,
+        self::FORMATTER_COMPACT
+    ];
     /**
      * @var IOInterface
      */
@@ -119,30 +127,18 @@ class Processor
      */
     public function processFiles($formatter)
     {
-        switch ($formatter) {
-            case 'compressed':
-            case 'crunched':
-            case 'expanded':
-            case 'nested':
-            case 'compact':
-                $formatter = 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
-                break;
-            default:
-                throw new \InvalidArgumentException('available options are: xxx');
-        }
-
         foreach ($this->files as $file) {
             $this->io->write("<info>processing</info>: {$file->getSourcePath()}");
             $file->setSourceContentFromSourcePath();
 
             switch ($file->getType()) {
-                case static::TYPE_COMPASS:
-                case static::TYPE_SCSS:
-                case static::TYPE_SASS:
-                    $this->sass->setFormatter($formatter);
+                case File::TYPE_COMPASS:
+                case File::TYPE_SCSS:
+                case File::TYPE_SASS:
+                    $this->sass->setFormatter($this->getFormatterClass($formatter));
                     $content = $this->sass->compile($file->getSourceContent());
                     break;
-                case static::TYPE_LESS:
+                case File::TYPE_LESS:
                     $content = $this->less->compile($file->getSourceContent());
                     break;
                 default:
@@ -151,5 +147,19 @@ class Processor
 
             $file->setParsedContent($content);
         }
+    }
+
+    /**
+     * @param string $formatter
+     *
+     * @return string
+     */
+    protected function getFormatterClass($formatter)
+    {
+        if (!in_array($formatter, static::SUPPORTED_FORMATTERS)) {
+            throw new \InvalidArgumentException('unknown formatter, available options are: ' . print_r(static::SUPPORTED_FORMATTERS, true));
+        }
+
+        return 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
     }
 }
