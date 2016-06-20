@@ -39,10 +39,6 @@ class Processor
      * @var LESSCompiler
      */
     private $less;
-    /**
-     * @var CompassCompiler
-     */
-    private $compass;
 
     public function __construct(IOInterface $io)
     {
@@ -55,7 +51,7 @@ class Processor
         $this->less = new LESSCompiler();
         $this->sass = new SASSCompiler();
         /** attaches compass functionality to the SASS compiler */
-        $this->compass = new CompassCompiler($this->sass);
+        new CompassCompiler($this->sass);
     }
 
     /**
@@ -103,9 +99,8 @@ class Processor
     public function saveOutput()
     {
         foreach ($this->concatOutput() as $path => $content) {
-
             $directory = dirname($path);
-            if (!is_dir($dir = $directory)) {
+            if (!is_dir($directory)) {
                 $this->io->write("<info>creating directory</info>: {$directory}");
                 mkdir($directory, 0755, true);
             }
