@@ -71,17 +71,12 @@ class Processor
             unset($files[0], $files[1]);
 
             foreach ($files as $file) {
-                $absolutePath = "$inputPath/$file";
-                if (is_file($absolutePath)) {
-                    $this->files[] = new File($absolutePath, $outputPath);
-                } else {
-                    $this->attachFiles($absolutePath, $outputPath);
-                }
+                $this->attachFiles("$inputPath/$file", $outputPath);
             }
         } else if (is_file($inputPath)) {
             $this->files[] = new File($inputPath, $outputPath);
         } else {
-            throw new \Exception('file doesn\'t exists');
+            throw new \Exception("file doesn't exists");
         }
     }
 
