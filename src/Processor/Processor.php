@@ -39,10 +39,6 @@ class Processor
      * @var LESSCompiler
      */
     private $less;
-    /**
-     * @var CompassCompiler
-     */
-    private $compass;
 
     public function __construct(IOInterface $io)
     {
@@ -55,7 +51,7 @@ class Processor
         $this->less = new LESSCompiler();
         $this->sass = new SASSCompiler();
         /** attaches compass functionality to the SASS compiler */
-        $this->compass = new CompassCompiler($this->sass);
+        new CompassCompiler($this->sass);
     }
 
     /**
