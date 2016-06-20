@@ -99,9 +99,8 @@ class Processor
     public function saveOutput()
     {
         foreach ($this->concatOutput() as $path => $content) {
-
             $directory = dirname($path);
-            if (!is_dir($dir = $directory)) {
+            if (!is_dir($directory)) {
                 $this->io->write("<info>creating directory</info>: {$directory}");
                 mkdir($directory, 0755, true);
             }
