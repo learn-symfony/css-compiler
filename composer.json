@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">= 5.5.9",
+        "php": ">= 5.5.9 || 7.0.0 - 7.0.4 || >= 7.0.6",
         "leafo/lessphp": "^0.5",
         "leafo/scssphp-compass": "dev-master"
     },
