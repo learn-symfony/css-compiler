@@ -6,19 +6,16 @@ use EM\CssCompiler\Exception\FileException;
 
 class File
 {
-    const TYPE_SCSS    = 'scss';
-    const TYPE_SASS    = 'sass';
-    const TYPE_COMPASS = 'compass';
-    const TYPE_LESS    = 'less';
-    const TYPE_UNKNOWN = 'unknown';
-    /**
-     * @var string[]
-     */
-    private static $extensions = [
-        self::TYPE_SCSS,
-        self::TYPE_SASS,
+    const TYPE_UNKNOWN    = 'unknown';
+    const TYPE_COMPASS    = 'compass';
+    const TYPE_SASS       = 'sass';
+    const TYPE_SCSS       = 'scss';
+    const TYPE_LESS       = 'less';
+    const SUPPORTED_TYPES = [
         self::TYPE_COMPASS,
-        self::TYPE_LESS,
+        self::TYPE_SASS,
+        self::TYPE_SCSS,
+        self::TYPE_LESS
     ];
     /**
      * @var string
@@ -64,7 +61,7 @@ class File
     public function setSourcePath($path)
     {
         $this->sourcePath = $path;
-        $this->detectSourceTypeFromPath($path);
+        $this->type = $this->detectSourceTypeFromPath($path);
 
         return $this;
     }
@@ -72,7 +69,7 @@ class File
     /**
      * @return string
      */
-    public function getOutputPath() 
+    public function getOutputPath()
     {
         return $this->outputPath;
     }
@@ -113,7 +110,7 @@ class File
      * @return File
      * @throws FileException
      */
-    public function setSourceContentFromSourcePath() 
+    public function setSourceContentFromSourcePath()
     {
         $this->sourceContent = $this->readSourceContentByPath();
 
@@ -133,7 +130,7 @@ class File
      *
      * @return File
      */
-    public function setParsedContent($content) 
+    public function setParsedContent($content)
     {
         $this->parsedContent = $content;
 
@@ -143,7 +140,7 @@ class File
     /**
      * @return string
      */
-    public function getType() 
+    public function getType()
     {
         return $this->type;
     }
@@ -162,24 +159,23 @@ class File
 
     /**
      * @param string $path
-     * 
-     * @return void
+     *
+     * @return string
      */
-    private function detectSourceTypeFromPath($path)
+    protected function detectSourceTypeFromPath($path)
     {
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-        if (in_array($extension, static::$extensions)) {
-            $this->type = $extension;
-        } else {
-            $this->type = static::TYPE_UNKNOWN;
-        }
+
+        return in_array($extension, static::SUPPORTED_TYPES)
+            ? $extension
+            : static::TYPE_UNKNOWN;
     }
 
     /**
      * @return string
      * @throws FileException
      */
-    private function readSourceContentByPath()
+    protected function readSourceContentByPath()
     {
         if (!file_exists($this->getSourcePath())) {
             throw new FileException("file: {$this->sourcePath} doesn't exists");
