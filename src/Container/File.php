@@ -10,6 +10,16 @@ class File
     const TYPE_SASS    = 'sass';
     const TYPE_COMPASS = 'compass';
     const TYPE_LESS    = 'less';
+    const TYPE_UNKNOWN = 'unknown';
+    /**
+     * @var string[]
+     */
+    private static $extensions = [
+        self::TYPE_SCSS,
+        self::TYPE_SASS,
+        self::TYPE_COMPASS,
+        self::TYPE_LESS,
+    ];
     /**
      * @var string
      */
@@ -157,21 +167,11 @@ class File
      */
     private function detectSourceTypeFromPath($path)
     {
-        switch (true) {
-            case 0 !== preg_match('/^.*\.' . static::TYPE_SCSS . '/', $path):
-                $this->type = static::TYPE_SCSS;
-                break;
-            case 0 !== preg_match('/^.*\.' . static::TYPE_SASS . '/', $path):
-                $this->type = static::TYPE_SASS;
-                break;
-            case 0 !== preg_match('/^.*\.' . static::TYPE_COMPASS . '/', $path):
-                $this->type = static::TYPE_COMPASS;
-                break;
-            case 0 !== preg_match('/^.*\.' . static::TYPE_LESS . '/', $path):
-                $this->type = static::TYPE_LESS;
-                break;
-            default:
-                $this->type = 'unknown';
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (in_array($extension, static::$extensions)) {
+            $this->type = $extension;
+        } else {
+            $this->type = static::TYPE_UNKNOWN;
         }
     }
 

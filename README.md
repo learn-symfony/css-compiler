@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/learn-symfony/css-compiler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/learn-symfony/css-compiler/?branch=master)
+
 [![Latest Stable Version](https://poser.pugx.org/eugene-matvejev/css-compiler/version)](https://packagist.org/packages/eugene-matvejev/css-compiler)
 [![Total Downloads](https://poser.pugx.org/eugene-matvejev/css-compiler/downloads)](https://packagist.org/packages/eugene-matvejev/css-compiler)
 [![License](https://poser.pugx.org/eugene-matvejev/css-compiler/license)](https://packagist.org/packages/eugene-matvejev/css-compiler)
