@@ -48,24 +48,6 @@ class File
         $this->outputPath = $outputPath;
     }
 
-    public function getSourcePath()
-    {
-        return $this->sourcePath;
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return File
-     */
-    public function setSourcePath($path)
-    {
-        $this->sourcePath = $path;
-        $this->type = $this->detectSourceTypeFromPath($path);
-
-        return $this;
-    }
-
     /**
      * @return string
      */
@@ -113,6 +95,37 @@ class File
     public function setSourceContentFromSourcePath()
     {
         $this->sourceContent = $this->readSourceContentByPath();
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @throws FileException
+     */
+    protected function readSourceContentByPath()
+    {
+        if (!file_exists($this->getSourcePath())) {
+            throw new FileException("file: {$this->sourcePath} doesn't exists");
+        }
+
+        return file_get_contents($this->getSourcePath());
+    }
+
+    public function getSourcePath()
+    {
+        return $this->sourcePath;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return File
+     */
+    public function setSourcePath($path)
+    {
+        $this->sourcePath = $path;
+        $this->type = $this->detectSourceTypeFromPath($path);
 
         return $this;
     }
@@ -169,18 +182,5 @@ class File
         return in_array($extension, static::SUPPORTED_TYPES)
             ? $extension
             : static::TYPE_UNKNOWN;
-    }
-
-    /**
-     * @return string
-     * @throws FileException
-     */
-    protected function readSourceContentByPath()
-    {
-        if (!file_exists($this->getSourcePath())) {
-            throw new FileException("file: {$this->sourcePath} doesn't exists");
-        }
-
-        return file_get_contents($this->getSourcePath());
     }
 }
