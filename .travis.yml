@@ -1,22 +1,14 @@
-language: php
-#
-#sudo: false
-#
-#cache:
-#    directories:
-#        - $HOME/.composer/cache/files
-#
-#matrix:
-#    include:
-##        - php: 5.6
-#        - php: 7.0
-#        - php: hhvm
-#
-#before_script:
-#    - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-#    - composer update $COMPOSER_FLAGS
-#
-#script: phpunit --coverage-text --coverage-clover=coverage.clover
-#
-#after_script:
-#    - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+language: "php"
+php:
+    - "5.6"
+    - "7.0.4"
+    - "hhvm"
+
+before_script:
+    - "composer install --no-progress --no-interaction"
+
+script:
+    - "php bin/phpunit -c phpunit.xml --colors=always --verbose --coverage-clover=coverage.xml"
+
+after_success:
+    - "bash <(curl -s https://codecov.io/bash)"

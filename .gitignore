@@ -1,2 +1,4 @@
 var/
+bin/
 vendor/
+composer.lock
