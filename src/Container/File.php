@@ -4,6 +4,9 @@ namespace EM\CssCompiler\Container;
 
 use EM\CssCompiler\Exception\FileException;
 
+/**
+ * @since 0.1
+ */
 class File
 {
     const TYPE_UNKNOWN    = 'unknown';
