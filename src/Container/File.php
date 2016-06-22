@@ -14,7 +14,7 @@ class File
     const TYPE_SASS       = 'sass';
     const TYPE_SCSS       = 'scss';
     const TYPE_LESS       = 'less';
-    const SUPPORTED_TYPES = [
+    static $supportedTypes = [
         self::TYPE_COMPASS,
         self::TYPE_SASS,
         self::TYPE_SCSS,
@@ -182,7 +182,7 @@ class File
     {
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        return in_array($extension, static::SUPPORTED_TYPES)
+        return in_array($extension, static::$supportedTypes)
             ? $extension
             : static::TYPE_UNKNOWN;
     }
