@@ -19,7 +19,7 @@ abstract class IntegrationTestSuite extends \PHPUnit_Framework_TestCase
      * @return mixed
      * @throws \Exception
      */
-    protected function invokeMethod($object, string $methodName, array $methodArguments = [])
+    protected function invokeMethod($object, $methodName, array $methodArguments = [])
     {
         $method = (new \ReflectionClass(get_class($object)))->getMethod($methodName);
         $method->setAccessible(true);
@@ -27,12 +27,18 @@ abstract class IntegrationTestSuite extends \PHPUnit_Framework_TestCase
         return $method->invokeArgs($object, $methodArguments);
     }
 
-    public static function getRootDirectory() : string
+    /**
+     * @return string
+     */
+    public static function getRootDirectory()
     {
         return dirname(__DIR__);
     }
 
-    public static function getSharedFixturesDirectory() : string
+    /**
+     * @return string
+     */
+    public static function getSharedFixturesDirectory()
     {
         return static::getRootDirectory() . '/shared-fixtures';
     }
@@ -44,7 +50,7 @@ abstract class IntegrationTestSuite extends \PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    public static function getSharedFixtureContent(string $filename) : string
+    public static function getSharedFixtureContent(string $filename)
     {
         return file_get_contents(static::getSharedFixturesDirectory() . "/$filename");
     }
