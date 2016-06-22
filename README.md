@@ -1,4 +1,5 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/learn-symfony/css-compiler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/learn-symfony/css-compiler/?branch=master)
+[![codecov](https://codecov.io/gh/learn-symfony/css-compiler/branch/master/graph/badge.svg)](https://codecov.io/gh/learn-symfony/css-compiler)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/b72078dc-94a7-492f-9deb-3829c41d2519/mini.png)](https://insight.sensiolabs.com/projects/b72078dc-94a7-492f-9deb-3829c41d2519)
 
 [![Latest Stable Version](https://poser.pugx.org/eugene-matvejev/css-compiler/version)](https://packagist.org/packages/eugene-matvejev/css-compiler)

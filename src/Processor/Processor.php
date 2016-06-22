@@ -9,6 +9,9 @@ use Leafo\ScssPhp\Compiler as SASSCompiler;
 use lessc as LESSCompiler;
 use scss_compass as CompassCompiler;
 
+/**
+ * @since 0.1
+ */
 class Processor
 {
     const FORMATTER_COMPRESSED = 'compressed';
