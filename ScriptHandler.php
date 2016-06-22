@@ -7,38 +7,56 @@ use EM\CssCompiler\Processor\Processor;
 
 class ScriptHandler
 {
+    const CONFIG_MAIN_KEY          = 'css-compiler';
+    const CONFIG_INPUT_KEY         = 'input';
+    const CONFIG_OUTPUT_KEY        = 'output';
+    const CONFIG_FORMATTER_KEY     = 'format';
+    const CONFIG_DEFAULT_FORMATTER = 'compact';
+
     public static function compileCSS(Event $event)
     {
-        $extras = $event->getComposer()->getPackage()->getExtra();
+        $extra = $event->getComposer()->getPackage()->getExtra();
 
-        if (!isset($extras['css-compiler'])) {
-            throw new \InvalidArgumentException('The parameter handler needs to be configured through the extra.css-compiler setting.');
-        }
-
-        $configs = $extras['css-compiler'];
-
-        if (!is_array($configs)) {
-            throw new \InvalidArgumentException('The extra.css-compiler setting must be an array of a configuration objects.');
-        }
-
-        if (array_keys($configs) !== range(0, count($configs) - 1)) {
-            $configs = [$configs];
-        }
+        static::validateConfiguration($extra);
 
         $processor = new Processor($event->getIO());
-        $prefix = getcwd();
-        foreach ($configs as $config) {
-            if (!is_array($config)) {
-                throw new \InvalidArgumentException('The extra.css-compiler should contain only configuration objects.');
+        $currentDirectory = getcwd();
+        foreach ($extra[static::CONFIG_MAIN_KEY] as $config) {
+            foreach ($config[static::CONFIG_INPUT_KEY] as $item => $value) {
+                $processor->attachFiles("{$currentDirectory}/{$value}", "{$currentDirectory}/{$config[static::CONFIG_OUTPUT_KEY]}");
             }
 
-            foreach ($config['input'] as $item => $value) {
-                $processor->attachFiles("{$prefix}/{$value}", "{$prefix}/{$config['output']}");
-            }
+            $formatter = isset($config[static::CONFIG_FORMATTER_KEY])
+                ? $config[static::CONFIG_FORMATTER_KEY]
+                : static::CONFIG_DEFAULT_FORMATTER;
 
-            $processor->processFiles(isset($config['format']) ? $config['format'] : 'compact');
+            $processor->processFiles($formatter);
         }
 
         $processor->saveOutput();
+    }
+
+    protected static function validateConfiguration(array $config)
+    {
+        if (!isset($config[static::CONFIG_MAIN_KEY])) {
+            throw new \InvalidArgumentException('the parameter handler needs to be configured through the extra.css-compiler setting.');
+        }
+
+        if (!is_array($config[static::CONFIG_MAIN_KEY])) {
+            throw new \InvalidArgumentException('the extra.css-compiler setting must be an array of a configuration objects.');
+        }
+
+        foreach ($config[static::CONFIG_MAIN_KEY] as $el) {
+            if (!is_array($el)) {
+                throw new \InvalidArgumentException('The extra.css-compiler should contain only configuration objects.');
+            }
+
+            if (!isset($el[static::CONFIG_INPUT_KEY])) {
+                throw new \InvalidArgumentException('The extra.css-compiler[].' . static::CONFIG_INPUT_KEY . ' is required!');
+            }
+            if (!isset($el[static::CONFIG_OUTPUT_KEY])) {
+                throw new \InvalidArgumentException('The extra.css-compiler[].' . static::CONFIG_OUTPUT_KEY . ' is required!');
+            }
+        }
     }
 }
