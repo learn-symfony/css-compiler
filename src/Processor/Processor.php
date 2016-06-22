@@ -77,17 +77,25 @@ class Processor
     }
 
     /**
+     * @return File[]
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
      * @return string[]
      */
-    public function concatOutput()
+    protected function concatOutput()
     {
         $outputMap = [];
         foreach ($this->files as $file) {
             if (!isset($outputMap[$file->getOutputPath()])) {
-                $outputMap[$file->getOutputPath()] = $file->getParsedContent();
-            } else {
-                $outputMap[$file->getOutputPath()] .= $file->getParsedContent();
+                $outputMap[$file->getOutputPath()] = '';
             }
+
+            $outputMap[$file->getOutputPath()] .= $file->getParsedContent();
         }
 
         return $outputMap;
@@ -117,26 +125,39 @@ class Processor
      */
     public function processFiles($formatter)
     {
+        $this->sass->setFormatter($this->getFormatterClass($formatter));
+        $this->io->write("<info>use '{$formatter}' formatting</info>");
+
         foreach ($this->files as $file) {
             $this->io->write("<info>processing</info>: {$file->getSourcePath()}");
             $file->setSourceContentFromSourcePath();
 
-            switch ($file->getType()) {
-                case File::TYPE_COMPASS:
-                case File::TYPE_SCSS:
-                case File::TYPE_SASS:
-                    $this->sass->setFormatter($this->getFormatterClass($formatter));
-                    $content = $this->sass->compile($file->getSourceContent());
-                    break;
-                case File::TYPE_LESS:
-                    $content = $this->less->compile($file->getSourceContent());
-                    break;
-                default:
-                    throw new CompilerException('unknown compiler');
+            try {
+                $this->processFile($file);
+            } catch (CompilerException $e) {
+                $this->io->writeError("<error>failed to process: {$file->getSourcePath()}</error>");
             }
-
-            $file->setParsedContent($content);
         }
+    }
+
+    /**
+     * @param File $file
+     *
+     * @return File
+     * @throws CompilerException
+     */
+    public function processFile(File $file)
+    {
+        switch ($file->getType()) {
+            case File::TYPE_COMPASS:
+            case File::TYPE_SCSS:
+            case File::TYPE_SASS:
+                return $file->setParsedContent($this->sass->compile($file->getSourceContent()));
+            case File::TYPE_LESS:
+                return $file->setParsedContent($this->less->compile($file->getSourceContent()));
+        }
+
+        throw new CompilerException('unknown compiler');
     }
 
     /**
