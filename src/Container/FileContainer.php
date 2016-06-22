@@ -4,7 +4,7 @@ namespace EM\CssCompiler\Container;
 
 use EM\CssCompiler\Exception\FileException;
 
-class File
+class FileContainer
 {
     const TYPE_UNKNOWN    = 'unknown';
     const TYPE_COMPASS    = 'compass';
