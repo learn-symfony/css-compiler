@@ -1,0 +1,105 @@
+<?php
+
+namespace EM\Tests\PHPUnit\Processor;
+
+use Composer\IO\IOInterface;
+use EM\CssCompiler\Container\FileContainer;
+use EM\CssCompiler\Processor\Processor;
+use EM\Tests\Environment\IntegrationTestSuite;
+
+/**
+ * @see Processor
+ */
+class ProcessorTest extends IntegrationTestSuite
+{
+    protected $event;
+    protected $io;
+    protected $package;
+
+    protected function setUp()
+    {
+        $this->io = $this->getMockBuilder(IOInterface::class)->getMock();
+    }
+
+    /**
+     * @see Processor::attachFiles
+     * @test
+     */
+    public function attachFiles()
+    {
+        $paths = [
+            static::getSharedFixturesDirectory() . '/sass',
+            static::getSharedFixturesDirectory() . '/compass'
+        ];
+        $cacheDir = dirname(dirname(__DIR__)) . '/var/cache';
+
+        foreach ($paths as $path) {
+            $processor = new Processor($this->io);
+            $processor->attachFiles($path, $cacheDir);
+
+            $this->assertCount(2, $processor->getFiles());
+        }
+    }
+
+    /**
+     * @see Processor::attachFiles
+     * @test
+     *
+     * @expectedException \Exception
+     */
+    public function attachFilesExpectedException()
+    {
+        $path = static::getSharedFixturesDirectory() . '/do-not-exists';
+        $cacheDir = dirname(dirname(__DIR__)) . '/var/cache';
+
+        $processor = new Processor($this->io);
+        $processor->attachFiles($path, $cacheDir);
+
+        $this->assertCount(2, $processor->getFiles());
+    }
+
+    /**
+     * @see Processor::processFile
+     * @test
+     */
+    public function processFileSASS()
+    {
+        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/layout.scss', ''))
+            ->setSourceContentFromSourcePath();
+
+        (new Processor($this->io))->processFile($file);
+
+        $this->assertNotEquals($file->getParsedContent(), $file->getSourceContent());
+    }
+
+    /**
+     * @see Processor::processFile
+     * @test
+     *
+     * @expectedException \EM\CssCompiler\Exception\CompilerException
+     */
+    public function processFileExpectedException()
+    {
+        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/', ''))
+            ->setSourceContentFromSourcePath()
+            ->setType(FileContainer::TYPE_UNKNOWN);
+
+        (new Processor($this->io))->processFile($file);
+    }
+
+    /**
+     * @see Processor::getFormatterClass
+     * @test
+     */
+    public function getFormatterClass()
+    {
+        foreach (Processor::$supportedFormatters as $formatter) {
+            $expected = 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
+
+            $this->assertEquals(
+                $expected,
+                $this->invokeMethod(new Processor($this->io), 'getFormatterClass', [$formatter])
+            );
+        }
+    }
+}
