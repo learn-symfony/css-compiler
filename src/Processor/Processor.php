@@ -3,7 +3,7 @@
 namespace EM\CssCompiler\Processor;
 
 use Composer\IO\IOInterface;
-use EM\CssCompiler\Container\File;
+use EM\CssCompiler\Container\FileContainer;
 use EM\CssCompiler\Exception\CompilerException;
 use Leafo\ScssPhp\Compiler as SASSCompiler;
 use lessc as LESSCompiler;
@@ -31,7 +31,7 @@ class Processor
      */
     private $io;
     /**
-     * @var File[]
+     * @var FileContainer[]
      */
     private $files = [];
     /**
@@ -73,14 +73,14 @@ class Processor
                 $this->attachFiles("$inputPath/$file", $outputPath);
             }
         } else if (is_file($inputPath)) {
-            $this->files[] = new File($inputPath, $outputPath);
+            $this->files[] = new FileContainer($inputPath, $outputPath);
         } else {
             throw new \Exception("file doesn't exists");
         }
     }
 
     /**
-     * @return File[]
+     * @return FileContainer[]
      */
     public function getFiles()
     {
@@ -149,14 +149,14 @@ class Processor
      * @return File
      * @throws CompilerException
      */
-    public function processFile(File $file)
+    public function processFile(FileContainer $file)
     {
         switch ($file->getType()) {
-            case File::TYPE_COMPASS:
-            case File::TYPE_SCSS:
-            case File::TYPE_SASS:
+            case FileContainer::TYPE_COMPASS:
+            case FileContainer::TYPE_SCSS:
+            case FileContainer::TYPE_SASS:
                 return $file->setParsedContent($this->sass->compile($file->getSourceContent()));
-            case File::TYPE_LESS:
+            case FileContainer::TYPE_LESS:
                 return $file->setParsedContent($this->less->compile($file->getSourceContent()));
         }
 
