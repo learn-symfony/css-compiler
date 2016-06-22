@@ -2,7 +2,7 @@
 
 namespace EM\CssCompiler\Handler;
 
-use Composer\EventDispatcher\Event;
+use Composer\Script\Event;
 use EM\CssCompiler\ScriptHandler as Handler;
 
 /**
