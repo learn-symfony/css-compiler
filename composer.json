@@ -25,6 +25,9 @@
             "tests/shared-enviroment/IntegrationTestSuite.php"
         ]
     },
+    "config": {
+        "bin-dir": "bin/"
+    },
     "require": {
         "php": ">= 5.6.0 || 7.0.0 - 7.0.4 || >= 7.0.6",
         "leafo/lessphp": "^0.5",
