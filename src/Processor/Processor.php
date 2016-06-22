@@ -16,7 +16,7 @@ class Processor
     const FORMATTER_EXPANDED   = 'expanded';
     const FORMATTER_NESTED     = 'nested';
     const FORMATTER_COMPACT    = 'compact';
-    const SUPPORTED_FORMATTERS = [
+    static $supportedFormatters = [
         self::FORMATTER_COMPRESSED,
         self::FORMATTER_CRUNCHED,
         self::FORMATTER_EXPANDED,
@@ -167,8 +167,8 @@ class Processor
      */
     protected function getFormatterClass($formatter)
     {
-        if (!in_array($formatter, static::SUPPORTED_FORMATTERS)) {
-            throw new \InvalidArgumentException('unknown formatter, available options are: ' . print_r(static::SUPPORTED_FORMATTERS, true));
+        if (!in_array($formatter, static::$supportedFormatters)) {
+            throw new \InvalidArgumentException('unknown formatter, available options are: ' . print_r(static::$supportedFormatters, true));
         }
 
         return 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);

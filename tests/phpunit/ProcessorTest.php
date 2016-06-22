@@ -93,7 +93,7 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function getFormatterClass()
     {
-        foreach (Processor::SUPPORTED_FORMATTERS as $formatter) {
+        foreach (Processor::$supportedFormatters as $formatter) {
             $expected = 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
 
             $this->assertEquals(
