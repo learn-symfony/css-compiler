@@ -30,9 +30,8 @@
     },
     "require": {
         "php": ">= 5.6.0 || 7.0.0 - 7.0.4 || >= 7.0.6",
-        "leafo/lessphp": "^0.5",
-        "leafo/scssphp": "@dev",
-        "leafo/scssphp-compass": "@dev"
+        "eugene-matvejev/compass": "self.version",
+        "leafo/lessphp": "^0.5"
     },
     "require-dev": {
         "composer/composer": "^1.1",
