@@ -1,6 +1,6 @@
 <?php
 
-namespace EM\Tests\Environment;
+namespace EM\CssCompiler\Tests\Environment;
 
 /**
  * @since 0.1

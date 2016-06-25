@@ -1,9 +1,9 @@
 <?php
 
-namespace EM\Tests\PHPUnit;
+namespace EM\CssCompiler\Tests\PHPUnit;
 
 use EM\CssCompiler\ScriptHandler;
-use EM\Tests\Environment\IntegrationTestSuite;
+use EM\CssCompiler\Tests\Environment\IntegrationTestSuite;
 
 /**
  * @see ScriptHandler

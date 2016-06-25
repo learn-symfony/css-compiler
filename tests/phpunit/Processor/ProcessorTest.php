@@ -1,11 +1,11 @@
 <?php
 
-namespace EM\Tests\PHPUnit\Processor;
+namespace EM\CssCompiler\Tests\PHPUnit\Processor;
 
 use Composer\IO\IOInterface;
 use EM\CssCompiler\Container\FileContainer;
 use EM\CssCompiler\Processor\Processor;
-use EM\Tests\Environment\IntegrationTestSuite;
+use EM\CssCompiler\Tests\Environment\IntegrationTestSuite;
 
 /**
  * @see Processor
