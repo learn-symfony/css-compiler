@@ -7,7 +7,7 @@ use EM\CssCompiler\Exception\FileException;
 /**
  * @since 0.1
  */
-class File
+class FileContainer
 {
     const TYPE_UNKNOWN    = 'unknown';
     const TYPE_COMPASS    = 'compass';

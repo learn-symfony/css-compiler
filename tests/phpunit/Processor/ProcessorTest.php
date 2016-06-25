@@ -1,11 +1,11 @@
 <?php
 
-namespace EM\Tests\PHPUnit;
+namespace EM\CssCompiler\Tests\PHPUnit\Processor;
 
 use Composer\IO\IOInterface;
-use EM\CssCompiler\Container\File;
+use EM\CssCompiler\Container\FileContainer;
 use EM\CssCompiler\Processor\Processor;
-use EM\Tests\Environment\IntegrationTestSuite;
+use EM\CssCompiler\Tests\Environment\IntegrationTestSuite;
 
 /**
  * @see Processor
@@ -64,7 +64,7 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function processFileSASS()
     {
-        $file = (new File(static::getSharedFixturesDirectory() . '/compass/sass/layout.scss', ''))
+        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/layout.scss', ''))
             ->setSourceContentFromSourcePath();
 
         (new Processor($this->io))->processFile($file);
@@ -80,9 +80,9 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function processFileExpectedException()
     {
-        $file = (new File(static::getSharedFixturesDirectory() . '/compass/sass/', ''))
+        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/', ''))
             ->setSourceContentFromSourcePath()
-            ->setType(File::TYPE_UNKNOWN);
+            ->setType(FileContainer::TYPE_UNKNOWN);
 
         (new Processor($this->io))->processFile($file);
     }
