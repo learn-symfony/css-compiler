@@ -1,6 +1,6 @@
 <?php
 
-namespace EM\CssCompiler\Container;
+namespace EM\CssCompiler\Tests\Container;
 
 class FileContainerTest
 {
