@@ -15,19 +15,10 @@ _can be triggered from composer's script's section: compiles LESS|SASS|Compass_
 ```
 composer require "eugene-matvejev/css-compiler"
 ```
-if you have problem with min-stability you can use this solution in '_require(-dev)_':
-_example_:
-```
-"require": {
-    "eugene-matvejev/css-compiler": "^0.1",
-    "leafo/scssphp-compass": "@dev",
-    "leafo/scssphp": "@dev"
-}
-```
 
 ### add callback into into composer's __scripts__:
 ```
-"EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
+"EM\\CssCompiler\\ScriptHandler::generateCSS"
 ```
 _example_:
 ```
@@ -35,7 +26,7 @@ _example_:
     "post-update-cmd": "@custom-events",
     "post-install-cmd": "@custom-events",
     "custom-events": [
-        "EM\\CssCompiler\\Handler\\ScriptHandler::compileCSS"
+        "EM\\CssCompiler\\ScriptHandler::generateCSS"
     ]
 }
 ```
