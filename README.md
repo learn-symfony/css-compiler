@@ -42,9 +42,9 @@ _example_:
         {
             "format": "compact",
             "input": [
-                "tests/shared-fixtures/scss"
+                "tests/shared-fixtures/compass/app.scss"
             ],
-            "output": "var/cache/assets/scss.css"
+            "output": "var/cache/assets/compass.css"
         },
         {
             "format": "compact",
@@ -52,13 +52,6 @@ _example_:
                 "tests/shared-fixtures/sass"
             ],
             "output": "var/cache/assets/sass.css"
-        },
-        {
-            "format": "compact",
-            "input": [
-                "tests/shared-fixtures/compass/app.scss"
-            ],
-            "output": "var/cache/assets/compass.css"
         }
     ]
 }
