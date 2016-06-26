@@ -62,7 +62,7 @@ class FileContainer
     /**
      * @param string $path
      *
-     * @return File
+     * @return FileContainer
      */
     public function setOutputPath($path)
     {
@@ -82,7 +82,7 @@ class FileContainer
     /**
      * @param string $content
      *
-     * @return File
+     * @return FileContainer
      */
     public function setSourceContent($content)
     {
@@ -92,7 +92,7 @@ class FileContainer
     }
 
     /**
-     * @return File
+     * @return FileContainer
      * @throws FileException
      */
     public function setSourceContentFromSourcePath()
@@ -123,7 +123,7 @@ class FileContainer
     /**
      * @param string $path
      *
-     * @return File
+     * @return FileContainer
      */
     public function setSourcePath($path)
     {
@@ -144,7 +144,7 @@ class FileContainer
     /**
      * @param string $content
      *
-     * @return File
+     * @return FileContainer
      */
     public function setParsedContent($content)
     {
@@ -164,7 +164,7 @@ class FileContainer
     /**
      * @param string $type
      *
-     * @return File
+     * @return FileContainer
      */
     public function setType($type)
     {
