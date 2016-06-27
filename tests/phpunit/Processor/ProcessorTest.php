@@ -28,10 +28,11 @@ class ProcessorTest extends IntegrationTestSuite
     public function attachFiles()
     {
         $paths = [
+            static::getSharedFixturesDirectory() . '/less'             => 1,
             static::getSharedFixturesDirectory() . '/compass'          => 1,
-            static::getSharedFixturesDirectory() . '/scss'             => 4,
             static::getSharedFixturesDirectory() . '/scss/layout.scss' => 1,
-            static::getSharedFixturesDirectory()                       => 6
+            static::getSharedFixturesDirectory() . '/scss'             => 4,
+            static::getSharedFixturesDirectory()                       => 7
         ];
         foreach ($paths as $path => $expectedFiles) {
             $processor = new Processor($this->io);
@@ -59,6 +60,15 @@ class ProcessorTest extends IntegrationTestSuite
     public function processFileOnSCSS()
     {
         $this->invokeProcessFileMethod('scss/layout.scss', '');
+    }
+
+    /**
+     * @see Processor::processFile
+     * @test
+     */
+    public function processFileOnLESS()
+    {
+        $this->invokeProcessFileMethod('less/print.less', '');
     }
 
     /**
@@ -114,7 +124,7 @@ class ProcessorTest extends IntegrationTestSuite
      * @see Processor::getFormatterClass
      * @test
      */
-    public function getFormatterClass()
+    public function getFormatterClassOnCorrect()
     {
         foreach (Processor::$supportedFormatters as $formatter) {
             $expected = 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
@@ -124,5 +134,39 @@ class ProcessorTest extends IntegrationTestSuite
                 $this->invokeMethod(new Processor($this->io), 'getFormatterClass', [$formatter])
             );
         }
+    }
+
+    /**
+     * @see Processor::getFormatterClass
+     * @test
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function getFormatterClassOnException()
+    {
+        $this->invokeMethod(new Processor($this->io), 'getFormatterClass', ['not-existing']);
+    }
+
+    /**
+     * @see Processor::fetchInputContextIntoFile
+     * @test
+     */
+    public function fetchInputContextIntoFileOnSuccess()
+    {
+        $file = new FileContainer(static::getSharedFixturesDirectory() . '/scss/layout.scss', '');
+        $this->invokeMethod(new Processor($this->io), 'fetchInputContextIntoFile', [$file]);
+
+        $this->assertNotNull($file->getInputContent());
+    }
+
+    /**
+     * @see Processor::fetchInputContextIntoFile
+     * @test
+     *
+     * @expectedException \EM\CssCompiler\Exception\FileException
+     */
+    public function fetchInputContextIntoFileOnException()
+    {
+        $this->invokeMethod(new Processor($this->io), 'fetchInputContextIntoFile', [new FileContainer('input', 'output')]);
     }
 }
