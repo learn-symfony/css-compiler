@@ -28,16 +28,16 @@ class ProcessorTest extends IntegrationTestSuite
     public function attachFiles()
     {
         $paths = [
-            static::getSharedFixturesDirectory() . '/sass',
-            static::getSharedFixturesDirectory() . '/compass'
+            static::getSharedFixturesDirectory() . '/sass'             => 1,
+            static::getSharedFixturesDirectory() . '/compass'          => 1,
+            static::getSharedFixturesDirectory() . '/scss'             => 3,
+            static::getSharedFixturesDirectory() . '/scss/layout.scss' => 1
         ];
-        $cacheDir = dirname(dirname(__DIR__)) . '/var/cache';
-
-        foreach ($paths as $path) {
+        foreach ($paths as $path => $expectedFiles) {
             $processor = new Processor($this->io);
-            $processor->attachFiles($path, $cacheDir);
+            $processor->attachFiles($path, '');
 
-            $this->assertCount(2, $processor->getFiles());
+            $this->assertCount($expectedFiles, $processor->getFiles());
         }
     }
 
@@ -49,13 +49,7 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function attachFilesExpectedException()
     {
-        $path = static::getSharedFixturesDirectory() . '/do-not-exists';
-        $cacheDir = dirname(dirname(__DIR__)) . '/var/cache';
-
-        $processor = new Processor($this->io);
-        $processor->attachFiles($path, $cacheDir);
-
-        $this->assertCount(2, $processor->getFiles());
+        (new Processor($this->io))->attachFiles(static::getSharedFixturesDirectory() . '/do-not-exists', '');
     }
 
     /**
@@ -64,7 +58,7 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function processFileSASS()
     {
-        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/layout.scss', ''))
+        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/scss/layout.scss', ''))
             ->setSourceContentFromSourcePath();
 
         (new Processor($this->io))->processFile($file);
@@ -80,7 +74,7 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function processFileExpectedException()
     {
-        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/', ''))
+        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass', ''))
             ->setSourceContentFromSourcePath()
             ->setType(FileContainer::TYPE_UNKNOWN);
 
