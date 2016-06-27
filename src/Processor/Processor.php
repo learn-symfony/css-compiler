@@ -22,7 +22,7 @@ class Processor
     const FORMATTER_EXPANDED   = 'expanded';
     const FORMATTER_NESTED     = 'nested';
     const FORMATTER_COMPACT    = 'compact';
-    static $supportedFormatters = [
+    public static $supportedFormatters = [
         self::FORMATTER_COMPRESSED,
         self::FORMATTER_CRUNCHED,
         self::FORMATTER_EXPANDED,
