@@ -2,6 +2,8 @@
 [![codecov](https://codecov.io/gh/learn-symfony/css-compiler/branch/master/graph/badge.svg)](https://codecov.io/gh/learn-symfony/css-compiler)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/b72078dc-94a7-492f-9deb-3829c41d2519/mini.png)](https://insight.sensiolabs.com/projects/b72078dc-94a7-492f-9deb-3829c41d2519)
 
+[![HHVM Status](http://hhvm.h4cc.de/badge/eugene-matvejev/css-compiler.svg)](http://hhvm.h4cc.de/package/eugene-matvejev/css-compiler)
+
 [![Latest Stable Version](https://poser.pugx.org/eugene-matvejev/css-compiler/version)](https://packagist.org/packages/eugene-matvejev/css-compiler)
 [![Total Downloads](https://poser.pugx.org/eugene-matvejev/css-compiler/downloads)](https://packagist.org/packages/eugene-matvejev/css-compiler)
 [![License](https://poser.pugx.org/eugene-matvejev/css-compiler/license)](https://packagist.org/packages/eugene-matvejev/css-compiler)
