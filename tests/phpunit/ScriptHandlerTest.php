@@ -28,9 +28,19 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateConfigurationExpectedExceptionOnNotArray()
+    function validateConfigurationExpectedExceptionOnEmpty()
     {
         $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [[ScriptHandler::CONFIG_MAIN_KEY]]);
+    }
+    /**
+     * @see ScriptHandler::validateConfiguration
+     * @test
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    function validateConfigurationExpectedExceptionOnNotArray()
+    {
+        $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [[ScriptHandler::CONFIG_MAIN_KEY => 'string']]);
     }
 
     /**
