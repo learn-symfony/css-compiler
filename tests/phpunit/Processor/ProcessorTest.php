@@ -52,23 +52,23 @@ class ProcessorTest extends IntegrationTestSuite
         (new Processor($this->io))->attachFiles(static::getSharedFixturesDirectory() . '/do-not-exists', '');
     }
 
-//    /**
-//     * @see Processor::processFile
-//     * @test
-//     */
-//    public function processFileOnSCSS()
-//    {
-//        $this->invokeProcessFileMethod('scss/layout.scss', '');
-//    }
-//
-//    /**
-//     * @see Processor::processFile
-//     * @test
-//     */
-//    public function processFileOnCompass()
-//    {
-//        $this->invokeProcessFileMethod('compass/compass-integration.scss', '');
-//    }
+    /**
+     * @see Processor::processFile
+     * @test
+     */
+    public function processFileOnSCSS()
+    {
+        $this->invokeProcessFileMethod('scss/layout.scss', '');
+    }
+
+    /**
+     * @see Processor::processFile
+     * @test
+     */
+    public function processFileOnCompass()
+    {
+        $this->invokeProcessFileMethod('compass/compass-integration.scss', '');
+    }
 
     /**
      * @see Processor::processFile
