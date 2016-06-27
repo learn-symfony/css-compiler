@@ -11,6 +11,8 @@ use lessc as LESSCompiler;
 use scss_compass as CompassCompiler;
 
 /**
+ * @see   ProcessorTest
+ *
  * @since 0.1
  */
 class Processor
@@ -20,7 +22,7 @@ class Processor
     const FORMATTER_EXPANDED   = 'expanded';
     const FORMATTER_NESTED     = 'nested';
     const FORMATTER_COMPACT    = 'compact';
-    static $supportedFormatters = [
+    public static $supportedFormatters = [
         self::FORMATTER_COMPRESSED,
         self::FORMATTER_CRUNCHED,
         self::FORMATTER_EXPANDED,

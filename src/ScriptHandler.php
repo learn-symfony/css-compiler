@@ -5,6 +5,11 @@ namespace EM\CssCompiler;
 use Composer\Script\Event;
 use EM\CssCompiler\Processor\Processor;
 
+/**
+ * @see   ScriptHandlerTest
+ *
+ * @since 0.1
+ */
 class ScriptHandler
 {
     const CONFIG_MAIN_KEY          = 'css-compiler';
