@@ -9,7 +9,7 @@
 
 
 # PHP CSS Compiler
-_can be triggered from composer's script's section: compiles LESS|SASS|Compass_
+_can be triggered from composer's script's section: compiles SCSS with compass|LESS_
 
 # How to use:
 ```
