@@ -2,28 +2,24 @@
 
 namespace EM\CssCompiler\Container;
 
-use EM\CssCompiler\Exception\FileException;
-
 /**
+ * @see   FileContainerTest
+ *
  * @since 0.1
  */
 class FileContainer
 {
-    const TYPE_UNKNOWN    = 'unknown';
-    const TYPE_COMPASS    = 'compass';
-    const TYPE_SASS       = 'sass';
-    const TYPE_SCSS       = 'scss';
-    const TYPE_LESS       = 'less';
+    const TYPE_UNKNOWN = 'unknown';
+    const TYPE_SCSS    = 'scss';
+    const TYPE_LESS    = 'less';
     static $supportedTypes = [
-        self::TYPE_COMPASS,
-        self::TYPE_SASS,
         self::TYPE_SCSS,
         self::TYPE_LESS
     ];
     /**
      * @var string
      */
-    private $sourcePath;
+    private $inputPath;
     /**
      * @var string
      */
@@ -31,24 +27,25 @@ class FileContainer
     /**
      * @var string
      */
-    private $sourceContent;
+    private $inputContent;
     /**
      * @var string
      */
-    private $parsedContent;
+    private $outputContent;
     /**
      * @var string
      */
     private $type;
 
     /**
-     * @param string $sourcePath
+     * @param string $inputPath
      * @param string $outputPath
      */
-    public function __construct($sourcePath, $outputPath)
+    public function __construct($inputPath, $outputPath)
     {
-        $this->setSourcePath($sourcePath);
-        $this->outputPath = $outputPath;
+        $this
+            ->setInputPath($inputPath)
+            ->setOutputPath($outputPath);
     }
 
     /**
@@ -62,7 +59,7 @@ class FileContainer
     /**
      * @param string $path
      *
-     * @return File
+     * @return $this
      */
     public function setOutputPath($path)
     {
@@ -74,61 +71,37 @@ class FileContainer
     /**
      * @return string
      */
-    public function getSourceContent()
+    public function getInputContent()
     {
-        return $this->sourceContent;
+        return $this->inputContent;
     }
 
     /**
      * @param string $content
      *
-     * @return File
+     * @return $this
      */
-    public function setSourceContent($content)
+    public function setInputContent($content)
     {
-        $this->sourceContent = $content;
+        $this->inputContent = $content;
 
         return $this;
     }
 
-    /**
-     * @return File
-     * @throws FileException
-     */
-    public function setSourceContentFromSourcePath()
+    public function getInputPath()
     {
-        $this->sourceContent = $this->readSourceContentByPath();
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     * @throws FileException
-     */
-    protected function readSourceContentByPath()
-    {
-        if (!file_exists($this->getSourcePath())) {
-            throw new FileException("file: {$this->sourcePath} doesn't exists");
-        }
-
-        return file_get_contents($this->getSourcePath());
-    }
-
-    public function getSourcePath()
-    {
-        return $this->sourcePath;
+        return $this->inputPath;
     }
 
     /**
      * @param string $path
      *
-     * @return File
+     * @return $this
      */
-    public function setSourcePath($path)
+    public function setInputPath($path)
     {
-        $this->sourcePath = $path;
-        $this->type = $this->detectSourceTypeFromPath($path);
+        $this->inputPath = $path;
+        $this->detectInputTypeByInputPath();
 
         return $this;
     }
@@ -136,19 +109,19 @@ class FileContainer
     /**
      * @return string
      */
-    public function getParsedContent()
+    public function getOutputContent()
     {
-        return $this->parsedContent;
+        return $this->outputContent;
     }
 
     /**
      * @param string $content
      *
-     * @return File
+     * @return $this
      */
-    public function setParsedContent($content)
+    public function setOutputContent($content)
     {
-        $this->parsedContent = $content;
+        $this->outputContent = $content;
 
         return $this;
     }
@@ -164,7 +137,7 @@ class FileContainer
     /**
      * @param string $type
      *
-     * @return File
+     * @return $this
      */
     public function setType($type)
     {
@@ -173,17 +146,16 @@ class FileContainer
         return $this;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function detectSourceTypeFromPath($path)
+    protected function detectInputTypeByInputPath()
     {
-        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($this->getInputPath(), PATHINFO_EXTENSION));
 
-        return in_array($extension, static::$supportedTypes)
+        $type = in_array($extension, static::$supportedTypes)
             ? $extension
             : static::TYPE_UNKNOWN;
+
+        $this->setType($type);
+
+        return $this;
     }
 }
