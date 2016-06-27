@@ -5,6 +5,7 @@ namespace EM\CssCompiler\Processor;
 use Composer\IO\IOInterface;
 use EM\CssCompiler\Container\FileContainer;
 use EM\CssCompiler\Exception\CompilerException;
+use EM\CssCompiler\Exception\FileException;
 use Leafo\ScssPhp\Compiler as SASSCompiler;
 use lessc as LESSCompiler;
 use scss_compass as CompassCompiler;
@@ -98,7 +99,7 @@ class Processor
                 $outputMap[$file->getOutputPath()] = '';
             }
 
-            $outputMap[$file->getOutputPath()] .= $file->getParsedContent();
+            $outputMap[$file->getOutputPath()] .= $file->getOutputContent();
         }
 
         return $outputMap;
@@ -132,32 +133,33 @@ class Processor
         $this->io->write("<info>use '{$formatter}' formatting</info>");
 
         foreach ($this->files as $file) {
-            $this->io->write("<info>processing</info>: {$file->getSourcePath()}");
-            $file->setSourceContentFromSourcePath();
+            $this->io->write("<info>processing</info>: {$file->getInputPath()}");
+            $this->fetchInputContextIntoFile($file);
 
             try {
                 $this->processFile($file);
             } catch (CompilerException $e) {
-                $this->io->writeError("<error>failed to process: {$file->getSourcePath()}</error>");
+                $this->io->writeError("<error>failed to process: {$file->getOutputPath()}</error>");
             }
         }
     }
 
     /**
-     * @param File $file
+     * @param FileContainer $file
      *
-     * @return File
+     * @return FileContainer
      * @throws CompilerException
      */
     public function processFile(FileContainer $file)
     {
         switch ($file->getType()) {
-            case FileContainer::TYPE_COMPASS:
             case FileContainer::TYPE_SCSS:
-            case FileContainer::TYPE_SASS:
-                return $file->setParsedContent($this->sass->compile($file->getSourceContent()));
+                $this->sass->addImportPath(dirname($file->getInputPath()));
+                $content = $this->sass->compile($file->getInputContent());
+
+                return $file->setOutputContent($content);
             case FileContainer::TYPE_LESS:
-                return $file->setParsedContent($this->less->compile($file->getSourceContent()));
+                return $file->setOutputContent($this->less->compileFile($file->getInputPath()));
         }
 
         throw new CompilerException('unknown compiler');
@@ -175,5 +177,19 @@ class Processor
         }
 
         return 'Leafo\\ScssPhp\\Formatter\\' . ucfirst($formatter);
+    }
+
+    /**
+     * @param FileContainer $file
+     *
+     * @throws FileException
+     */
+    protected function fetchInputContextIntoFile(FileContainer $file)
+    {
+        if (!file_exists($file->getInputPath())) {
+            throw new FileException("file: {$file->getInputPath()} doesn't exists");
+        }
+
+        $file->setInputContent(file_get_contents($file->getInputPath()));
     }
 }

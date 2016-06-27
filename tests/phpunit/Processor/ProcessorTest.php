@@ -28,16 +28,16 @@ class ProcessorTest extends IntegrationTestSuite
     public function attachFiles()
     {
         $paths = [
-            static::getSharedFixturesDirectory() . '/sass',
-            static::getSharedFixturesDirectory() . '/compass'
+            static::getSharedFixturesDirectory() . '/compass'          => 1,
+            static::getSharedFixturesDirectory() . '/scss'             => 4,
+            static::getSharedFixturesDirectory() . '/scss/layout.scss' => 1,
+            static::getSharedFixturesDirectory()                       => 6
         ];
-        $cacheDir = dirname(dirname(__DIR__)) . '/var/cache';
-
-        foreach ($paths as $path) {
+        foreach ($paths as $path => $expectedFiles) {
             $processor = new Processor($this->io);
-            $processor->attachFiles($path, $cacheDir);
+            $processor->attachFiles($path, '');
 
-            $this->assertCount(2, $processor->getFiles());
+            $this->assertCount($expectedFiles, $processor->getFiles());
         }
     }
 
@@ -49,27 +49,50 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function attachFilesExpectedException()
     {
-        $path = static::getSharedFixturesDirectory() . '/do-not-exists';
-        $cacheDir = dirname(dirname(__DIR__)) . '/var/cache';
-
-        $processor = new Processor($this->io);
-        $processor->attachFiles($path, $cacheDir);
-
-        $this->assertCount(2, $processor->getFiles());
+        (new Processor($this->io))->attachFiles(static::getSharedFixturesDirectory() . '/do-not-exists', '');
     }
 
     /**
      * @see Processor::processFile
      * @test
      */
-    public function processFileSASS()
+    public function processFileOnSCSS()
     {
-        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/layout.scss', ''))
-            ->setSourceContentFromSourcePath();
+        $this->invokeProcessFileMethod('scss/layout.scss', '');
+    }
+
+    /**
+     * @see Processor::processFile
+     * @test
+     */
+    public function processFileOnCompass()
+    {
+        $this->invokeProcessFileMethod('compass/compass-integration.scss', '');
+    }
+
+    /**
+     * @see Processor::processFile
+     * @test
+     */
+    public function processFileOnImports()
+    {
+        $this->invokeProcessFileMethod('integration/app.scss', '');
+    }
+
+    /**
+     * @param string $inputPathPostfix
+     * @param string $outputPath
+     *
+     * @throws \EM\CssCompiler\Exception\CompilerException
+     */
+    private function invokeProcessFileMethod($inputPathPostfix, $outputPath)
+    {
+        $file = new FileContainer(static::getSharedFixturesDirectory() . "/{$inputPathPostfix}", $outputPath);
+        $file->setInputContent(file_get_contents($file->getInputPath()));
 
         (new Processor($this->io))->processFile($file);
 
-        $this->assertNotEquals($file->getParsedContent(), $file->getSourceContent());
+        $this->assertNotEquals($file->getInputContent(), $file->getOutputContent());
     }
 
     /**
@@ -80,9 +103,9 @@ class ProcessorTest extends IntegrationTestSuite
      */
     public function processFileExpectedException()
     {
-        $file = (new FileContainer(static::getSharedFixturesDirectory() . '/compass/sass/', ''))
-            ->setSourceContentFromSourcePath()
-            ->setType(FileContainer::TYPE_UNKNOWN);
+        $file = new FileContainer(static::getSharedFixturesDirectory() . '/compass', '');
+        $file->setInputContent(file_get_contents($file->getInputPath()));
+        $file->setType(FileContainer::TYPE_UNKNOWN);
 
         (new Processor($this->io))->processFile($file);
     }
