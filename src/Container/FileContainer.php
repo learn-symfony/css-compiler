@@ -12,7 +12,7 @@ class FileContainer
     const TYPE_UNKNOWN = 'unknown';
     const TYPE_SCSS    = 'scss';
     const TYPE_LESS    = 'less';
-    static $supportedTypes = [
+    public static $supportedTypes = [
         self::TYPE_SCSS,
         self::TYPE_LESS
     ];
