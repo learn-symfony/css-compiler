@@ -11,6 +11,8 @@ use lessc as LESSCompiler;
 use scss_compass as CompassCompiler;
 
 /**
+ * @see   ProcessorTest
+ *
  * @since 0.1
  */
 class Processor
