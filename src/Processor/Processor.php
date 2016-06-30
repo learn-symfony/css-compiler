@@ -7,6 +7,7 @@ use EM\CssCompiler\Container\FileContainer;
 use EM\CssCompiler\Exception\CompilerException;
 use EM\CssCompiler\Exception\FileException;
 use Leafo\ScssPhp\Compiler as SASSCompiler;
+use Leafo\ScssPhp\Exception\ParserException;
 use lessc as LESSCompiler;
 use scss_compass as CompassCompiler;
 
@@ -156,12 +157,20 @@ class Processor
     {
         switch ($file->getType()) {
             case FileContainer::TYPE_SCSS:
-                $this->sass->addImportPath(dirname($file->getInputPath()));
-                $content = $this->sass->compile($file->getInputContent());
+                try {
+                    $this->sass->addImportPath(dirname($file->getInputPath()));
+                    $content = $this->sass->compile($file->getInputContent());
 
-                return $file->setOutputContent($content);
+                    return $file->setOutputContent($content);
+                } catch (ParserException $e) {
+                    throw new CompilerException($e->getMessage(), 1, $e);
+                }
             case FileContainer::TYPE_LESS:
-                return $file->setOutputContent($this->less->compileFile($file->getInputPath()));
+                try {
+                    return $file->setOutputContent($this->less->compileFile($file->getInputPath()));
+                } catch (\Exception $e) {
+                    throw new CompilerException($e->getMessage(), 1, $e);
+                }
         }
 
         throw new CompilerException('unknown compiler');
