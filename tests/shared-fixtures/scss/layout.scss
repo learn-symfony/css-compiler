@@ -20,23 +20,6 @@ body {
 }
 
 .page-sidebar,
-.page-content {
-    transition: all 0.5s ease;
-    color: #fff;
-}
-
-.page-sidebar {
-    position: fixed;
-    height: 100%;
-    left: 0;
-    z-index: 1000;
-    overflow-y: auto;
-    /*background: linear-gradient(to bottom,  #b26cab 0%,#765c8b 100%); !* W3C *!*/
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
-    border-right: 1px solid #fff;
-}
-
-.page-sidebar,
 .sidebar-nav > li {
     width: 250px;
 }
@@ -58,23 +41,6 @@ body {
     &:not(.toggled) .toggle-btn {
         opacity: 0;
     }
-}
-
-.toggle-btn {
-    cursor: pointer;
-}
-
-.page-header {
-    font-size: 24px;
-    margin: 0;
-    padding: 40px 0 0 20px;
-
-    &,
-    & > span {
-        line-height: 32px;
-        height: 75px;
-    }
-
 }
 
 .sidebar-nav {
@@ -106,76 +72,4 @@ body {
     & > li:not(.sidebar-brand):not(.selected):hover {
         cursor: pointer;
     }
-}
-
-.page-content:not(.toggled) .toggle-btn {
-    opacity: 0;
-}
-
-.page-loading {
-    background: rgba(2, 2, 2, 0.5);
-    z-index: 10002;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-
-    & > .loading-animation {
-        margin: auto;
-        top: 50%;
-        zoom: 4;
-    }
-}
-
-.no-scroll-mode {
-    position: fixed;
-}
-
-#notification-area {
-    width: calc(100% - 50px);
-    border: 1px solid;
-    min-height: 100px;
-    position: absolute;
-    border-radius: 10px;
-
-    font-size: 72px;
-    z-index: 1;
-    text-align: center;
-    font-style: italic;
-}
-
-#notification-area > .notification-control {
-    float: right;
-    margin: 10px;
-    font-size: 24px;
-
-    &:hover {
-        font-weight: bolder;
-        cursor: pointer;
-    }
-}
-
-#modal-area {
-    color: #000;
-    h4, label {
-        text-transform: uppercase;
-    }
-
-    .help-block {
-        font-size: 14px;
-        font-style: italic;
-    }
-}
-
-.container-fluid {
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 25px;
-}
-
-.pagination-area {
-    text-align: center;
-}
-
-a.history-title {
-    color: #F5DEB3;
 }
