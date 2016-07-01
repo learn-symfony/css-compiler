@@ -63,7 +63,7 @@ class ScriptHandler
             throw new \InvalidArgumentException('the extra.css-compiler setting must be an array of objects');
         }
 
-        return static::validateOptions($config);
+        return static::validateOptions($config[static::CONFIG_MAIN_KEY]);
     }
 
     /**
@@ -74,9 +74,9 @@ class ScriptHandler
      */
     protected static function validateOptions(array $config)
     {
-        foreach ($config[static::CONFIG_MAIN_KEY] as $index => $option) {
+        foreach ($config as $option) {
             if (!is_array($option)) {
-                throw new \InvalidArgumentException("the extra.css-compiler[{$index}]." . static::OPTION_KEY_INPUT . ' array');
+                throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[]." . static::OPTION_KEY_INPUT . ' array');
             }
 
             static::validateMandatoryOptions($option);
@@ -84,7 +84,6 @@ class ScriptHandler
 
         return true;
     }
-
 
     /**
      * @param array $config
@@ -96,37 +95,45 @@ class ScriptHandler
     {
         foreach (static::$mandatoryOptions as $option) {
             if (empty($config[$option])) {
-                throw new \InvalidArgumentException("The extra.css-compiler[].{$option} required!");
+                throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[].{$option} is required!");
+            }
+
+            switch ($option) {
+                case static::OPTION_KEY_INPUT:
+                    static::validateIsArray($config[$option]);
+                    break;
+                case static::OPTION_KEY_OUTPUT:
+                    static::validateIsString($config[$option]);
+                    break;
             }
         }
-        static::validateInputOption($config);
-        static::validateOutputOption($config);
 
         return true;
     }
+
     /**
-     * @param array $config
+     * @param array $option
      *
      * @return bool
      */
-    protected static function validateInputOption(array $config)
+    protected static function validateIsArray($option)
     {
-        if (!is_array($config[static::OPTION_KEY_INPUT])) {
-            throw new \InvalidArgumentException('The extra.css-compiler[].' . static::OPTION_KEY_INPUT . ' should be array!');
+        if (!is_array($option)) {
+            throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . '[]' . static::OPTION_KEY_INPUT . ' should be array!');
         }
 
         return true;
     }
 
     /**
-     * @param array $config
+     * @param string $option
      *
      * @return bool
      */
-    protected static function validateOutputOption(array $config)
+    protected static function validateIsString($option)
     {
-        if (!is_string($config[static::OPTION_KEY_OUTPUT])) {
-            throw new \InvalidArgumentException('The extra.css-compiler[].' . static::OPTION_KEY_OUTPUT . ' should string!');
+        if (!is_string($option)) {
+            throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . '[]' . static::OPTION_KEY_OUTPUT . ' should string!');
         }
 
         return true;
