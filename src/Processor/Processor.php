@@ -152,23 +152,45 @@ class Processor
     {
         switch ($file->getType()) {
             case FileContainer::TYPE_SCSS:
-                try {
-                    $this->scss->addImportPath(dirname($file->getInputPath()));
-                    $content = $this->scss->compile($file->getInputContent());
-
-                    return $file->setOutputContent($content);
-                } catch (ParserException $e) {
-                    throw new CompilerException($e->getMessage(), 1, $e);
-                }
+                return $this->compileSCSS($file);
             case FileContainer::TYPE_LESS:
-                try {
-                    return $file->setOutputContent($this->less->compileFile($file->getInputPath()));
-                } catch (\Exception $e) {
-                    throw new CompilerException($e->getMessage(), 1, $e);
-                }
+                return $this->compileLESS($file);
         }
 
         throw new CompilerException('unknown compiler');
+    }
+
+    /**
+     * @param FileContainer $file
+     *
+     * @return $this
+     * @throws CompilerException
+     */
+    protected function compileSCSS(FileContainer $file)
+    {
+        try {
+            $this->scss->addImportPath(dirname($file->getInputPath()));
+            $content = $this->scss->compile($file->getInputContent());
+
+            return $file->setOutputContent($content);
+        } catch (ParserException $e) {
+            throw new CompilerException($e->getMessage(), 1, $e);
+        }
+    }
+
+    /**
+     * @param FileContainer $file
+     *
+     * @return $this
+     * @throws CompilerException
+     */
+    protected function compileLESS(FileContainer $file)
+    {
+        try {
+            return $file->setOutputContent($this->less->compileFile($file->getInputPath()));
+        } catch (\Exception $e) {
+            throw new CompilerException($e->getMessage(), 1, $e);
+        }
     }
 
     /**

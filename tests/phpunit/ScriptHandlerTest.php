@@ -32,6 +32,7 @@ class ScriptHandlerTest extends IntegrationTestSuite
     {
         $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [[ScriptHandler::CONFIG_MAIN_KEY]]);
     }
+
     /**
      * @see ScriptHandler::validateConfiguration
      * @test
@@ -134,10 +135,10 @@ class ScriptHandlerTest extends IntegrationTestSuite
      */
     function validateOptionsOnValid()
     {
-        $result = $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[
-            ScriptHandler::OPTION_KEY_INPUT  => ['string'],
-            ScriptHandler::OPTION_KEY_OUTPUT => 'string'
-        ]]);
+        $options = [
+            [ScriptHandler::OPTION_KEY_INPUT => ['string'], ScriptHandler::OPTION_KEY_OUTPUT => 'string']
+        ];
+        $result = $this->invokeMethod(new ScriptHandler(), 'validateOptions', [$options]);
 
         $this->assertTrue($result);
     }
