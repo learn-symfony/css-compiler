@@ -247,4 +247,25 @@ class ProcessorTest extends IntegrationTestSuite
 
         return $processor->getFiles();
     }
+
+    /**
+     * @see ScriptHandler::processFiles
+     * @test
+     */
+    public function saveOutput()
+    {
+        $processor = new Processor($this->io);
+
+        $expectedOutputFile = $this->getRootDirectory() . '/../var/tests/' . __FUNCTION__ . '.css';
+        @unlink($expectedOutputFile);
+        $processor->attachFiles(
+            $this->getSharedFixturesDirectory() . '/scss',
+            $expectedOutputFile
+        );
+        $processor->processFiles(Processor::FORMATTER_COMPRESSED);
+
+        $processor->saveOutput();
+
+        $this->assertFileExists($expectedOutputFile);
+    }
 }
