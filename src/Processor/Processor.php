@@ -6,7 +6,7 @@ use Composer\IO\IOInterface;
 use EM\CssCompiler\Container\FileContainer;
 use EM\CssCompiler\Exception\CompilerException;
 use EM\CssCompiler\Exception\FileException;
-use Leafo\ScssPhp\Compiler as SASSCompiler;
+use Leafo\ScssPhp\Compiler as SCSSCompiler;
 use Leafo\ScssPhp\Exception\ParserException;
 use lessc as LESSCompiler;
 use scss_compass as CompassCompiler;
@@ -39,9 +39,9 @@ class Processor
      */
     private $files = [];
     /**
-     * @var SASSCompiler
+     * @var SCSSCompiler
      */
-    private $sass;
+    private $scss;
     /**
      * @var LESSCompiler
      */
@@ -50,15 +50,10 @@ class Processor
     public function __construct(IOInterface $io)
     {
         $this->io = $io;
-        $this->initCompilers();
-    }
-
-    protected function initCompilers()
-    {
         $this->less = new LESSCompiler();
-        $this->sass = new SASSCompiler();
-        /** attaches compass functionality to the SASS compiler */
-        new CompassCompiler($this->sass);
+        $this->scss = new SCSSCompiler();
+        /** attaches compass functionality to the SCSS compiler */
+        new CompassCompiler($this->scss);
     }
 
     /**
@@ -132,7 +127,7 @@ class Processor
      */
     public function processFiles($formatter)
     {
-        $this->sass->setFormatter($this->getFormatterClass($formatter));
+        $this->scss->setFormatter($this->getFormatterClass($formatter));
         $this->io->write("<info>use '{$formatter}' formatting</info>");
 
         foreach ($this->files as $file) {
@@ -158,8 +153,8 @@ class Processor
         switch ($file->getType()) {
             case FileContainer::TYPE_SCSS:
                 try {
-                    $this->sass->addImportPath(dirname($file->getInputPath()));
-                    $content = $this->sass->compile($file->getInputContent());
+                    $this->scss->addImportPath(dirname($file->getInputPath()));
+                    $content = $this->scss->compile($file->getInputContent());
 
                     return $file->setOutputContent($content);
                 } catch (ParserException $e) {
