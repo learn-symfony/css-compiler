@@ -63,15 +63,7 @@ class ScriptHandler
             throw new \InvalidArgumentException('the extra.css-compiler setting must be an array of objects');
         }
 
-        foreach ($config[static::CONFIG_MAIN_KEY] as $index => $el) {
-            if (!is_array($el)) {
-                throw new \InvalidArgumentException("the extra.css-compiler[{$index}]." . static::OPTION_KEY_INPUT . ' array');
-            }
-
-            static::validateOptions($el);
-        }
-
-        return true;
+        return static::validateOptions($config);
     }
 
     /**
@@ -82,14 +74,57 @@ class ScriptHandler
      */
     protected static function validateOptions(array $config)
     {
+        foreach ($config[static::CONFIG_MAIN_KEY] as $index => $option) {
+            if (!is_array($option)) {
+                throw new \InvalidArgumentException("the extra.css-compiler[{$index}]." . static::OPTION_KEY_INPUT . ' array');
+            }
+
+            static::validateMandatoryOptions($option);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @param array $config
+     *
+     * @return bool
+     * @throws \InvalidArgumentException
+     */
+    protected static function validateMandatoryOptions(array $config)
+    {
         foreach (static::$mandatoryOptions as $option) {
             if (empty($config[$option])) {
                 throw new \InvalidArgumentException("The extra.css-compiler[].{$option} required!");
             }
         }
+        static::validateInputOption($config);
+        static::validateOutputOption($config);
+
+        return true;
+    }
+    /**
+     * @param array $config
+     *
+     * @return bool
+     */
+    protected static function validateInputOption(array $config)
+    {
         if (!is_array($config[static::OPTION_KEY_INPUT])) {
             throw new \InvalidArgumentException('The extra.css-compiler[].' . static::OPTION_KEY_INPUT . ' should be array!');
         }
+
+        return true;
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return bool
+     */
+    protected static function validateOutputOption(array $config)
+    {
         if (!is_string($config[static::OPTION_KEY_OUTPUT])) {
             throw new \InvalidArgumentException('The extra.css-compiler[].' . static::OPTION_KEY_OUTPUT . ' should string!');
         }
