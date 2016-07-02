@@ -14,10 +14,7 @@ build:
     tests:
         override:
             -
-                command: "composer validate"
-        override:
-            -
                 command: "php bin/phpunit -c phpunit.xml --colors=always --verbose --coverage-clover=coverage.xml"
                 coverage:
                     file: "coverage.xml"
-                    format: "php-clover"
+                    format: "clover"
