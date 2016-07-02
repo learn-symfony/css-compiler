@@ -17,9 +17,9 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateConfigurationExpectedExceptionOnNotExistingKey()
+    public function validateConfigurationExpectedExceptionOnNotExistingKey()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [[]]);
+        $this->validateConfiguration([]);
     }
 
     /**
@@ -28,9 +28,9 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateConfigurationExpectedExceptionOnEmpty()
+    public function validateConfigurationExpectedExceptionOnEmpty()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [[ScriptHandler::CONFIG_MAIN_KEY]]);
+        $this->validateConfiguration([ScriptHandler::CONFIG_MAIN_KEY => '']);
     }
 
     /**
@@ -39,9 +39,9 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateConfigurationExpectedExceptionOnNotArray()
+    public function validateConfigurationExpectedExceptionOnNotArray()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [[ScriptHandler::CONFIG_MAIN_KEY => 'string']]);
+        $this->validateConfiguration([ScriptHandler::CONFIG_MAIN_KEY => 'string']);
     }
 
     /**
@@ -50,34 +50,30 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateConfigurationExpectedExceptionOptionIsNotArray()
+    public function validateConfigurationExpectedExceptionOptionIsNotArray()
     {
-        $arr = [
+        $this->validateConfiguration([ScriptHandler::CONFIG_MAIN_KEY => ['string']]);
+    }
+
+    /**
+     * @see ScriptHandler::validateConfiguration
+     * @test
+     */
+    public function validateConfigurationOnValid()
+    {
+        $args = [
             ScriptHandler::CONFIG_MAIN_KEY => [
-                'string'
+                [ScriptHandler::OPTION_KEY_INPUT => ['string'], ScriptHandler::OPTION_KEY_OUTPUT => 'string']
             ]
         ];
-        $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [$arr]);
+
+        $this->assertTrue($this->validateConfiguration($args));
     }
 
-    /**
-     * @see ScriptHandler::validateConfiguration
-     * @test
-     */
-    function validateConfigurationOnValid()
+    private function validateConfiguration($args)
     {
-        $arr = [
-            ScriptHandler::CONFIG_MAIN_KEY => [
-                [
-                    ScriptHandler::OPTION_KEY_INPUT  => ['string'],
-                    ScriptHandler::OPTION_KEY_OUTPUT => 'string'
-                ]
-            ]
-        ];
-        $result = $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [$arr]);
-        $this->assertTrue($result);
+        return $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [$args]);
     }
-
     /*** *************************** OPTIONS VALIDATION *************************** ***/
     /**
      * @see ScriptHandler::validateOptions
@@ -85,9 +81,9 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateOptionsExpectedExceptionOnMissingInput()
+    public function validateOptionsExpectedExceptionOnMissingInput()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[ScriptHandler::OPTION_KEY_OUTPUT]]);
+        $this->validateOptions([[ScriptHandler::OPTION_KEY_OUTPUT => 'output']]);
     }
 
     /**
@@ -96,9 +92,9 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateOptionsExpectedExceptionOnMissingOutput()
+    public function validateOptionsExpectedExceptionOnMissingOutput()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[ScriptHandler::OPTION_KEY_INPUT]]);
+        $this->validateOptions([ScriptHandler::OPTION_KEY_INPUT => 'input']);
     }
 
     /**
@@ -107,12 +103,12 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateOptionsExpectedExceptionOnInputNotArray()
+    public function validateOptionsExpectedExceptionOnInputNotArray()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[
+        $this->validateOptions([
             ScriptHandler::OPTION_KEY_INPUT  => 'string',
             ScriptHandler::OPTION_KEY_OUTPUT => 'string'
-        ]]);
+        ]);
     }
 
     /**
@@ -121,25 +117,35 @@ class ScriptHandlerTest extends IntegrationTestSuite
      *
      * @expectedException \InvalidArgumentException
      */
-    function validateOptionsExpectedExceptionOnOutputNotString()
+    public function validateOptionsExpectedExceptionOnOutputNotString()
     {
-        $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[
+        $this->validateOptions([
             ScriptHandler::OPTION_KEY_INPUT  => ['string'],
             ScriptHandler::OPTION_KEY_OUTPUT => ['string']
-        ]]);
+        ]);
     }
 
     /**
      * @see ScriptHandler::validateOptions
      * @test
      */
-    function validateOptionsOnValid()
+    public function validateOptionsOnValid()
     {
-        $options = [
-            [ScriptHandler::OPTION_KEY_INPUT => ['string'], ScriptHandler::OPTION_KEY_OUTPUT => 'string']
-        ];
-        $result = $this->invokeMethod(new ScriptHandler(), 'validateOptions', [$options]);
+        $this->assertTrue(
+            $this->validateOptions([
+                ScriptHandler::OPTION_KEY_INPUT  => ['string'],
+                ScriptHandler::OPTION_KEY_OUTPUT => 'string'
+            ])
+        );
+    }
 
-        $this->assertTrue($result);
+    /**
+     * @param array $config
+     *
+     * @return bool
+     */
+    private function validateOptions($config)
+    {
+        return $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[$config]]);
     }
 }
