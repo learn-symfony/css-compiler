@@ -255,8 +255,9 @@ class ProcessorTest extends IntegrationTestSuite
     {
         $processor = new Processor($this->io);
 
-        $expectedOutputFile = $this->getRootDirectory() . '/../var/tests/' . __FUNCTION__ . '.css';
+        $expectedOutputFile = $this->getCacheDirectory() . '/' . __FUNCTION__ . '.css';
         @unlink($expectedOutputFile);
+
         $processor->attachFiles(
             $this->getSharedFixturesDirectory() . '/scss',
             $expectedOutputFile
