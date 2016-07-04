@@ -30,7 +30,6 @@ class ProcessorTest extends IntegrationTestSuite
             static::getSharedFixturesDirectory() . '/compass'          => 1,
             static::getSharedFixturesDirectory() . '/scss/layout.scss' => 1,
             static::getSharedFixturesDirectory() . '/scss'             => 4,
-            static::getSharedFixturesDirectory()                       => 9
         ];
         foreach ($paths as $path => $expectedFiles) {
             $processor = new Processor($this->io);
