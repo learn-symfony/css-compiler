@@ -33,18 +33,24 @@ class ScriptHandler
         static::validateConfiguration($extra);
 
         $processor = new Processor($event->getIO());
-        $currentDirectory = getcwd();
 
         foreach ($extra[static::CONFIG_MAIN_KEY] as $config) {
-            foreach ($config[static::OPTION_KEY_INPUT] as $value) {
-                $processor->attachFiles("{$currentDirectory}/{$value}", "{$currentDirectory}/{$config[static::OPTION_KEY_OUTPUT]}");
+            foreach ($config[static::OPTION_KEY_INPUT] as $inputSource) {
+                $processor->attachFiles(
+                    static::resolvePath($inputSource, getcwd()),
+                    static::resolvePath($config[static::OPTION_KEY_OUTPUT], getcwd())
+                );
             }
 
             $formatter = isset($config[static::OPTION_KEY_FORMATTER]) ? $config[static::OPTION_KEY_FORMATTER] : static::DEFAULT_OPTION_FORMATTER;
-
             $processor->processFiles($formatter);
         }
         $processor->saveOutput();
+    }
+
+    protected static function resolvePath($path, $prefix)
+    {
+        return '/' === substr($path, 0, 1) ? $path : "{$prefix}/{$path}";
     }
 
     /**

@@ -2,6 +2,11 @@
 
 namespace EM\CssCompiler\Tests\PHPUnit;
 
+use Composer\Composer;
+use Composer\Config;
+use Composer\IO\IOInterface;
+use Composer\Package\RootPackage;
+use Composer\Script\Event;
 use EM\CssCompiler\ScriptHandler;
 use EM\CssCompiler\Tests\Environment\IntegrationTestSuite;
 
@@ -147,5 +152,47 @@ class ScriptHandlerTest extends IntegrationTestSuite
     private function validateOptions($config)
     {
         return $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[$config]]);
+    }
+    
+    /*** *************************** INTEGRATION *************************** ***/
+    /**
+     * @see   ScriptHandler::generateCSS
+     * @test
+     */
+    public function generateCSS()
+    {
+        $composer = (new Composer());
+        /** @var RootPackage|\PHPUnit_Framework_MockObject_MockObject $rootPackage */
+        $rootPackage = $this->getMockBuilder(RootPackage::class)
+            ->setConstructorArgs(['css-compiler', 'dev-master', 'dev'])
+            ->setMethods(['getExtra'])
+            ->getMock();
+        /** @var IOInterface|\PHPUnit_Framework_MockObject_MockObject $io */
+        $io = $this->getMockBuilder(IOInterface::class)->getMock();
+
+        $output = $this->getCacheDirectory() . '/' . __FUNCTION__ . '.css';
+        @unlink($output);
+
+        $extra = [
+            'css-compiler' => [
+                [
+                    'format' => 'compact',
+                    'input'  => [
+                        $this->getSharedFixturesDirectory() . '/less'
+                    ],
+                    'output' => $output
+                ]
+            ]
+        ];
+
+        $rootPackage->expects($this->once())
+            ->method('getExtra')
+            ->willReturn($extra);
+        $composer->setPackage($rootPackage);
+
+        $event = new Event('onInstall', $composer, $io);
+
+        ScriptHandler::generateCSS($event);
+        $this->assertFileExists($output);
     }
 }

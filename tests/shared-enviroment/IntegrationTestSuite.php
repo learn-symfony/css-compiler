@@ -30,7 +30,7 @@ abstract class IntegrationTestSuite extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    public static function getRootDirectory()
+    protected function getRootDirectory()
     {
         return dirname(__DIR__);
     }
@@ -38,7 +38,7 @@ abstract class IntegrationTestSuite extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    public static function getSharedFixturesDirectory()
+    protected function getSharedFixturesDirectory()
     {
         return static::getRootDirectory() . '/shared-fixtures';
     }
@@ -50,8 +50,13 @@ abstract class IntegrationTestSuite extends \PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    public static function getSharedFixtureContent(string $filename)
+    protected function getSharedFixtureContent(string $filename)
     {
         return file_get_contents(static::getSharedFixturesDirectory() . "/$filename");
+    }
+
+    protected function getCacheDirectory()
+    {
+        return dirname($this->getRootDirectory()) . '/var/cache/tests';
     }
 }
