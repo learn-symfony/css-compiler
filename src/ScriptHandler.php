@@ -48,6 +48,12 @@ class ScriptHandler
         $processor->saveOutput();
     }
 
+    /**
+     * @param string $path
+     * @param string $prefix
+     *
+     * @return string
+     */
     protected static function resolvePath($path, $prefix)
     {
         return '/' === substr($path, 0, 1) ? $path : "{$prefix}/{$path}";
@@ -69,79 +75,39 @@ class ScriptHandler
             throw new \InvalidArgumentException('the extra.css-compiler setting must be an array of objects');
         }
 
-        return static::validateOptions($config[static::CONFIG_MAIN_KEY]);
-    }
-
-    /**
-     * @param array $config
-     *
-     * @return bool
-     * @throws \InvalidArgumentException
-     */
-    protected static function validateOptions(array $config)
-    {
-        foreach ($config as $option) {
-            if (!is_array($option)) {
+        foreach ($config[static::CONFIG_MAIN_KEY] as $options) {
+            if (!is_array($options)) {
                 throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[]." . static::OPTION_KEY_INPUT . ' array');
             }
 
-            static::validateMandatoryOptions($option);
+            static::validateMandatoryOptions($options);
         }
-
-        return true;
     }
 
     /**
-     * @param array $config
+     * @param array $options
      *
-     * @return bool
      * @throws \InvalidArgumentException
      */
-    protected static function validateMandatoryOptions(array $config)
+    protected static function validateMandatoryOptions(array $options)
     {
-        foreach (static::$mandatoryOptions as $option) {
-            if (empty($config[$option])) {
-                throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[].{$option} is required!");
+        foreach (static::$mandatoryOptions as $optionIndex) {
+            if (!isset($options[$optionIndex])) {
+                throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[].{$optionIndex} is required!");
             }
 
-            switch ($option) {
+            switch ($optionIndex) {
                 case static::OPTION_KEY_INPUT:
-                    static::validateIsArray($config[$option]);
+                    if (!is_array($options[$optionIndex])) {
+                        throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[].{$optionIndex} should be array!");
+                    }
                     break;
                 case static::OPTION_KEY_OUTPUT:
-                    static::validateIsString($config[$option]);
+                    if (!is_string($options[$optionIndex])) {
+                        throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . "[].{$optionIndex} should string!");
+                    }
                     break;
             }
         }
-
-        return true;
-    }
-
-    /**
-     * @param array $option
-     *
-     * @return bool
-     */
-    protected static function validateIsArray($option)
-    {
-        if (!is_array($option)) {
-            throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . '[]' . static::OPTION_KEY_INPUT . ' should be array!');
-        }
-
-        return true;
-    }
-
-    /**
-     * @param string $option
-     *
-     * @return bool
-     */
-    protected static function validateIsString($option)
-    {
-        if (!is_string($option)) {
-            throw new \InvalidArgumentException('extra.' . static::CONFIG_MAIN_KEY . '[]' . static::OPTION_KEY_OUTPUT . ' should string!');
-        }
-
-        return true;
     }
 }
