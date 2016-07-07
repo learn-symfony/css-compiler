@@ -164,7 +164,7 @@ class ScriptHandlerTest extends IntegrationTestSuite
      */
     private function validateMandatoryOptions($config)
     {
-        return $this->invokeMethod(new ScriptHandler(), 'validateMandatoryOptions', [$config]);
+        return $this->invokeMethod(new ScriptHandler(), 'validateMandatoryOptions', [$config, 1]);
     }
 
     /*** *************************** INTEGRATION *************************** ***/
