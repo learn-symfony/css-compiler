@@ -72,88 +72,101 @@ class ScriptHandlerTest extends IntegrationTestSuite
             ]
         ];
 
-        $this->assertTrue($this->validateConfiguration($args));
+        $this->assertNull($this->validateConfiguration($args));
     }
 
+    /**
+     * @see ScriptHandler::validateConfiguration
+     *
+     * @param $args
+     *
+     * @return bool
+     */
     private function validateConfiguration($args)
     {
         return $this->invokeMethod(new ScriptHandler(), 'validateConfiguration', [$args]);
     }
     /*** *************************** OPTIONS VALIDATION *************************** ***/
     /**
-     * @see ScriptHandler::validateOptions
+     * @see ScriptHandler::validateMandatoryOptions
      * @test
      *
      * @expectedException \InvalidArgumentException
      */
     public function validateOptionsExpectedExceptionOnMissingInput()
     {
-        $this->validateOptions([[ScriptHandler::OPTION_KEY_OUTPUT => 'output']]);
+        $this->validateMandatoryOptions([[ScriptHandler::OPTION_KEY_OUTPUT => 'output']]);
     }
 
     /**
-     * @see ScriptHandler::validateOptions
+     * @see ScriptHandler::validateMandatoryOptions
      * @test
      *
      * @expectedException \InvalidArgumentException
      */
     public function validateOptionsExpectedExceptionOnMissingOutput()
     {
-        $this->validateOptions([ScriptHandler::OPTION_KEY_INPUT => 'input']);
+        $this->validateMandatoryOptions([ScriptHandler::OPTION_KEY_INPUT => 'input']);
     }
 
     /**
-     * @see ScriptHandler::validateOptions
+     * @see ScriptHandler::validateMandatoryOptions
      * @test
      *
      * @expectedException \InvalidArgumentException
      */
     public function validateOptionsExpectedExceptionOnInputNotArray()
     {
-        $this->validateOptions([
+        $this->validateMandatoryOptions([
             ScriptHandler::OPTION_KEY_INPUT  => 'string',
             ScriptHandler::OPTION_KEY_OUTPUT => 'string'
         ]);
     }
 
     /**
-     * @see ScriptHandler::validateOptions
+     * @see ScriptHandler::validateMandatoryOptions
      * @test
      *
      * @expectedException \InvalidArgumentException
      */
     public function validateOptionsExpectedExceptionOnOutputNotString()
     {
-        $this->validateOptions([
+        $this->validateMandatoryOptions([
             ScriptHandler::OPTION_KEY_INPUT  => ['string'],
             ScriptHandler::OPTION_KEY_OUTPUT => ['string']
         ]);
     }
 
     /**
-     * @see ScriptHandler::validateOptions
+     * @see   ScriptHandler::validateMandatoryOptions
      * @test
+     *
+     * @group tester
      */
     public function validateOptionsOnValid()
     {
-        $this->assertTrue(
-            $this->validateOptions([
-                ScriptHandler::OPTION_KEY_INPUT  => ['string'],
-                ScriptHandler::OPTION_KEY_OUTPUT => 'string'
-            ])
+        $this->assertNull(
+            $this->validateMandatoryOptions(
+                [
+                    ScriptHandler::OPTION_KEY_INPUT  => ['string'],
+                    ScriptHandler::OPTION_KEY_OUTPUT => 'string'
+                ]
+            )
         );
     }
 
     /**
+     * @see ScriptHandler::validateMandatoryOptions
+     *
      * @param array $config
      *
      * @return bool
      */
-    private function validateOptions($config)
+    private function validateMandatoryOptions($config)
     {
-        return $this->invokeMethod(new ScriptHandler(), 'validateOptions', [[$config]]);
+        return $this->invokeMethod(new ScriptHandler(), 'validateMandatoryOptions', [$config, 1]);
     }
-    
+
     /*** *************************** INTEGRATION *************************** ***/
     /**
      * @see   ScriptHandler::generateCSS
