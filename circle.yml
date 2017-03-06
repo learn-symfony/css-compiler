@@ -1,0 +1,15 @@
+machine:
+    php:
+        version: 7.1.0
+        
+dependencies:
+    cache_directories:
+        - ~/.composer/cache
+    override:
+        - composer install --no-progress --no-interaction
+
+test:
+    override:
+        - phpunit -c .
+    post:
+        - bash <(curl -s https://codecov.io/bash) -t eaad9275-9810-4190-bd1e-55cb0f5a8899
