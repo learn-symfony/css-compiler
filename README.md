@@ -10,19 +10,16 @@
 [![composer.lock](https://poser.pugx.org/eugene-matvejev/css-compiler/composerlock)](https://packagist.org/packages/eugene-matvejev/css-compiler)
 
 
-# PHP CSS Compiler
+# PHP CSS compiler with composer handler
 _can be triggered from composer's script's section: compiles SCSS with compass|LESS_
 
-# How to use:
-```
-composer require "eugene-matvejev/css-compiler"
-```
+## how to use
+`composer require eugene-matvejev/css-compiler`
 
-### add callback into into composer's __scripts__:
-```
-"EM\\CssCompiler\\ScriptHandler::generateCSS"
-```
-_example_:
+### add callback into into composer's __scripts__
+`"EM\\CssCompiler\\ScriptHandler::generateCSS"`
+
+_example_
 ```
 "scripts": {
     "post-update-cmd": "@custom-events",
@@ -32,12 +29,13 @@ _example_:
     ]
 }
 ```
+
 ### add _css-compiler_ information inside of the _extra_ composer configuration
  * _format_: compression format
  * _input_: array of relative paths to the composer.json, all files will be picked up recursivly inside of the directory
- * _output_:  relative file path to the composer.json, where to save output (hard-copy)
+ * _output_: relative file path to the composer.json, where to save output (hard-copy)
 
-_example_:
+_example_
 ```
 "extra": {
     "css-compiler": [
